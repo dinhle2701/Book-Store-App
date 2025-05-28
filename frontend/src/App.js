@@ -1,12 +1,31 @@
 /* eslint-disable no-unused-vars */
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { UserProvider } from './context/UserContext'; // đường dẫn đúng theo project bạn
+import AppRoutes from './routes/AppRoutes.jsx';
 
 function App() {
   return (
     <div className="App">
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-4xl font-bold text-blue-600">Hello Tailwind!</h1>
-      </div>
+      <UserProvider>
+        <BrowserRouter>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+          {/* <UserDashboard/> */}
+          <AppRoutes />
+
+        </BrowserRouter>
+      </UserProvider>
     </div>
   );
 }

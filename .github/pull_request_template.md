@@ -8,7 +8,7 @@
   - [ ] Application is SPA.(0/20)
   - [x] Webpack or another bundler should be used. There should be one HTML-file, JS-file, and one CSS-file (or it can be embedded right in the HTML-file). (20/20)
 
-
+<!-- 
 =============================
 name: Chat bot CI/CD Pipeline
 
@@ -75,4 +75,4 @@ jobs:
 
       - name: Create CloudFront invalidation
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.REACT_APP_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.REACT_APP_CLOUDFRONT_DISTRIBUTION }} --paths "/*" -->
