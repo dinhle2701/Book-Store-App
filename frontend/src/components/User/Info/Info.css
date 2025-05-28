@@ -1,0 +1,8 @@
+.info{
+    height: 88vh;
+}
+
+.info .container{
+    background-color: white;
+    border-radius: 14px;
+}

@@ -1,0 +1,11 @@
+.footer{
+    background-color: rgb(76, 76, 76);
+}
+.footer .container p{
+    color: rgba(222, 222, 222, 0.682);
+}
+
+.footer .col ul li a{
+    color: rgba(233, 233, 233, 0.724);
+    line-height: 3;
+}

@@ -1,0 +1,22 @@
+.admission{
+    background-color: #025854;
+}
+
+.admission .container h1{
+    color: #10b715;
+}
+.admission .container p{
+    color: rgb(201, 207, 211);
+}
+.container .admission-block{
+    background-color: #186b66;
+    border-radius: 14px;
+}
+
+.container .admission-icon{
+    border-radius: 40px;
+    font-size: 300px;
+    width: 70px;
+    height: 70px;
+    background-color: #377f79;
+}

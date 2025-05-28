@@ -1,0 +1,9 @@
+.zoom-hover {
+    transition: transform 0.3s ease; /* hiệu ứng mượt mà */
+  }
+  
+  .zoom-hover:hover {
+    transform: scale(1.1); /* phóng to 10% khi hover */
+    cursor: pointer;
+  }
+  

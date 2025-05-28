@@ -1,0 +1,10 @@
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* .navbar{
+  background-color: #f8f8ef;
+  position: fixed;
+  width: 100%;
+  top: 0;
+} */
