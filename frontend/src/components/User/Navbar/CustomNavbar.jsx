@@ -1,21 +1,17 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-import { Navbar, Container, Form, FormControl, Image, Button, Dropdown } from 'react-bootstrap';
-import { useUser } from '../../../context/UserContext';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import './CustomNavbar.css';
-import '../../Custom/hover.css'
-import Notification from '../Notification/Notification';
-import { Home, ShoppingCart, Heart, Search } from "lucide-react";
-
+import { useUser } from '../../../context/UserContext';
+import { Home, ShoppingCart, Heart, Store, Search } from "lucide-react";
+import Container from '../../Custom/Container.jsx'
 
 const CustomNavbar = () => {
-  const { user, setUser } = useUser(); // Dùng context
+  const { user, setUser } = useUser();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef();
 
   const handleInformation = () => {
-    window.location.href = '/infor';
+    window.location.href = '/info';
   };
-
 
   const handleLogout = () => {
     const confirmed = window.confirm("Bạn có chắc chắn muốn đăng xuất không?");
@@ -26,83 +22,96 @@ const CustomNavbar = () => {
     }
   };
 
+  // Auto close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <Navbar expand="lg" className="shadow-sm py-2">
-      <Container fluid className="px-3 px-md-5">
-        {/* Toggle for mobile */}
-        <Navbar.Toggle aria-controls="navbarResponsive" />
+    <nav className="bg-white shadow-sm w-full py-2 px-4 md:px-10 sticky top-0 z-50">
+      <Container>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Logo */}
+          <Link to="/" className="text-decoration-none text-black text-2xl font-bold flex items-center gap-2">
+            <Store className="w-6 h-6 text-green-600" />
+            <span>
+              <span className="text-green-600">B</span>ook Store
+            </span>
+          </Link>
 
-        <Navbar.Brand href="/" className="text-success zoom-hover fw-semibold fs-4">
-          <span className="fw-bold fs-3">B</span>ook Store
-        </Navbar.Brand>
-
-        <Navbar.Collapse id="navbarResponsive" className="justify-content-between">
           {/* Search */}
-          <Form className="d-flex mx-auto w-100 w-md-50 my-2 my-md-0">
-            <FormControl
-              type="search"
-              placeholder="Search"
-              className="me-2 rounded-pill px-3"
-              aria-label="Search"
-            />
-          </Form>
+          <div className="flex-grow max-w-xl w-full">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full rounded-full border px-4 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            </div>
+          </div>
 
-          {/* Right Section */}
-          <div className="d-flex align-items-center gap-3 justify-content-end mt-2 mt-md-0">
-            {/* <Notification /> */}
-
-            <Link to="/" title="Home">
-              <Home className="w-6 h-6" />
+          {/* Icons + User */}
+          <div className="flex items-center gap-10 relative">
+            <Link to="/" title="Home" className="hover:text-green-600">
+              <Home className="w-5 h-5" />
             </Link>
-            <Link to="/favorites" title="Favourites">
-              <Heart className="w-6 h-6" />
+            <Link to="/favorites" title="Favorites" className="hover:text-green-600">
+              <Heart className="w-5 h-5" />
             </Link>
-            <Link to="/cart" title="Cart">
-              <ShoppingCart className="w-6 h-6" />
+            <Link to="/cart" title="Cart" className="hover:text-green-600">
+              <ShoppingCart className="w-5 h-5" />
             </Link>
 
             {user ? (
-              <Dropdown align="end">
-                <Dropdown.Toggle
-                  as="div"
-                  className="p-0 border-0 shadow-none"
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="d-flex align-items-center">
-                    <Image
-                      src={user.avatar || 'https://randomuser.me/api/portraits/men/32.jpg'}
-                      roundedCircle
-                      width="40"
-                      height="40"
-                      className="me-2"
-                    />
-                    <div className="text-start d-none d-md-block">
-                      <div className="fw-semibold text-dark">{user.iss || 'Username'}</div>
-                      <div className="text-dark">{user.sub || 'User'}</div>
-                    </div>
+              <div className="relative" ref={dropdownRef}>
+                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-2 focus:outline-none">
+                  <img
+                    src={user.avatar || "https://randomuser.me/api/portraits/men/32.jpg"}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="hidden md:flex flex-col text-sm">
+                    <span className="font-semibold text-gray-800">{user.iss || "Username"}</span>
+                    <span className="text-gray-600">{user.sub || "User"}</span>
                   </div>
-                </Dropdown.Toggle>
+                </button>
 
-                <Dropdown.Menu className="mt-2">
-                  <Dropdown.Item onClick={handleInformation}>Info</Dropdown.Item>
-                  <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+                    <button
+                      onClick={handleInformation}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                    >
+                      Info
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <Button
-                className="zoom-hover"
-                variant="success"
-                href="/login"
-                style={{ background: 'rgb(4, 194, 1)', border: '0' }}
+              <Link
+                to="/login"
+                className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-600 transition"
               >
                 Login
-              </Button>
+              </Link>
             )}
           </div>
-        </Navbar.Collapse>
+        </div>
       </Container>
-    </Navbar>
+    </nav>
   );
 };
 

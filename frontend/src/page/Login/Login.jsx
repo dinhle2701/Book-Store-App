@@ -1,27 +1,18 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useLogin } from '../../query/auth'; // Hook gọi API
+import { useLogin } from '../../query/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { jwtDecode } from 'jwt-decode';
-import { useUser } from '../../context/UserContext'; // đúng path tới UserContext
+import { useUser } from '../../context/UserContext';
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setUser } = useUser(); // lấy hàm setUser từ context
+    const { setUser } = useUser();
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
-
-    const [formErrors, setFormErrors] = useState({
-        email: '',
-        password: ''
-    });
-
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [formErrors, setFormErrors] = useState({ email: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
     const loginMutation = useLogin();
 
@@ -30,99 +21,51 @@ const Login = () => {
 
     const validateField = (name, value) => {
         let error = '';
-
         if (name === 'email') {
-            if (!value.trim()) {
-                error = 'Please insert email';
-            } else if (!emailRegex.test(value)) {
-                error = "Invalid email format. Email must be like 'abc@gmail.com'";
-            }
+            if (!value.trim()) error = 'Please insert email';
+            else if (!emailRegex.test(value)) error = "Invalid email format. Email must be like 'abc@gmail.com'";
         }
-
         if (name === 'password') {
-            if (!value.trim()) {
-                error = 'Please insert password';
-            } else if (!passwordRegex.test(value)) {
-                error = 'Password must be 8-24 characters with uppercase, lowercase, and number.';
-            }
+            if (!value.trim()) error = 'Please insert password';
+            else if (!passwordRegex.test(value)) error = 'Password must be 8-24 characters with uppercase, lowercase, and number.';
         }
-
         return error;
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-
-        // Validate ngay khi nhập
+        setFormData((prev) => ({ ...prev, [name]: value }));
         const error = validateField(name, value);
-
-        setFormErrors((prev) => ({
-            ...prev,
-            [name]: error,
-        }));
+        setFormErrors((prev) => ({ ...prev, [name]: error }));
     };
 
     const handleLogin = (e) => {
         e.preventDefault();
-
-        // Validate toàn bộ form trước khi submit
         const errors = {
             email: validateField('email', formData.email),
             password: validateField('password', formData.password)
         };
-
         setFormErrors(errors);
+        if (errors.email || errors.password) return;
 
-        // Nếu còn lỗi, không submit
-        if (errors.email || errors.password) {
-            return;
-        }
-
-        // Gọi API
         loginMutation.mutate(formData, {
             onSuccess: (data) => {
                 localStorage.setItem('token', data.token);
                 const decodedToken = jwtDecode(data.token);
-                const role = decodedToken.role;
                 setUser(decodedToken);
-
-                toast.success('Login Successful!', {
-                    position: 'top-right',
-                    autoClose: 500
-                });
-
+                toast.success('Login Successful!', { position: 'top-right', autoClose: 500 });
                 setTimeout(() => {
-                    if (role === 'Admin') {
-                        navigate('/admin');
-                    } else if (role === 'User') {
-                        navigate('/');
-                    } else {
-                        navigate('/user');
-                    }
+                    navigate(decodedToken.role === 'Admin' ? '/admin' : decodedToken.role === 'User' ? '/' : '/user');
                 }, 1500);
             },
             onError: (error) => {
                 const errorMessage = error.response?.data?.message || "Something went wrong";
                 const msg = errorMessage.toLowerCase();
-
-                setFormErrors({
-                    email: '',
-                    password: ''
-                });
-
-                if (error.response?.status === 401 || error.response?.status === 404) {
-                    if (msg.includes('email') || msg.includes('tài khoản')) {
-                        setFormErrors(prev => ({ ...prev, email: errorMessage }));
-                    } else if (msg.includes('password') || msg.includes('mật khẩu')) {
-                        setFormErrors(prev => ({ ...prev, password: errorMessage }));
-                    } else {
-                        setFormErrors(prev => ({ ...prev, email: errorMessage }));
-                    }
+                setFormErrors({ email: '', password: '' });
+                if ([401, 404].includes(error.response?.status)) {
+                    if (msg.includes('email') || msg.includes('tài khoản')) setFormErrors(prev => ({ ...prev, email: errorMessage }));
+                    else if (msg.includes('password') || msg.includes('mật khẩu')) setFormErrors(prev => ({ ...prev, password: errorMessage }));
+                    else setFormErrors(prev => ({ ...prev, email: errorMessage }));
                 } else {
                     toast.error("Unable Connect to Server", { autoClose: 1500 });
                 }
@@ -130,75 +73,59 @@ const Login = () => {
         });
     };
 
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
     return (
-        <div className="signin">
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
             <ToastContainer />
-            <Container className="form-container d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-                <Row className="w-100">
-                    <Col xs={12} sm={10} md={8} lg={6} className="mx-auto">
-                        <div className="form-control p-4">
-                            <h2 className="text-center">Login</h2>
-                            <Form onSubmit={handleLogin}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label className="fw-bold">Email</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="email"
-                                        placeholder="abc@gmail.com"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        isInvalid={!!formErrors.email}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {formErrors.email}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
+            <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">
+                <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
+                <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="text"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-2 mt-1 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+                            placeholder="abc@gmail.com"
+                        />
+                        {formErrors.email && <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>}
+                    </div>
 
-                                <Form.Group className="mb-4">
-                                    <Form.Label className="fw-bold">Password</Form.Label>
-                                    <div className="input-group">
-                                        <Form.Control
-                                            type={showPassword ? "text" : "password"}
-                                            name="password"
-                                            placeholder="Enter your password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            isInvalid={!!formErrors.password}
-                                        />
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-secondary"
-                                            onClick={toggleShowPassword}
-                                            tabIndex={-1}
-                                        >
-                                            {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
-                                        </button>
-                                        <Form.Control.Feedback type="invalid">
-                                            {formErrors.password}
-                                        </Form.Control.Feedback>
-                                    </div>
-                                </Form.Group>
-
-                                <Form.Group className="mb-3 text-center">
-                                    <Button variant='success' className="w-50" type="submit" disabled={loginMutation.isLoading}>
-                                        {loginMutation.isLoading ? 'Logging in...' : 'Login'}
-                                    </Button>
-                                </Form.Group>
-
-                                <Form.Group className="mb-3 text-center">
-                                    <span className="ms-3">
-                                        <a href="/register" className='text-success'>Register</a>
-                                    </span>
-                                </Form.Group>
-                            </Form>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Password</label>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className={`w-full px-4 py-2 mt-1 border ${formErrors.password ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+                                placeholder="Enter your password"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
+                            >
+                                {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
+                            </button>
                         </div>
-                    </Col>
-                </Row>
-            </Container>
+                        {formErrors.password && <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>}
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                        <button
+                            type="submit"
+                            disabled={loginMutation.isLoading}
+                            className="w-1/2 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none"
+                        >
+                            {loginMutation.isLoading ? 'Logging in...' : 'Login'}
+                        </button>
+                        <a href="/register" className="mt-3 text-green-600 hover:underline text-sm">Register</a>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

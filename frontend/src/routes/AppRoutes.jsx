@@ -2,7 +2,7 @@
 // routes/AppRouter.jsx
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "../components/Home/Home.jsx";
+// import Home from "../components/Home/Home.jsx";
 import Login from "../page/Login/Login.jsx";
 import Register from "../page/Register/Register.jsx";
 import UserDashboard from '../components/Dashboard/UserDashboard.jsx';
@@ -17,7 +17,7 @@ export default function AppRouter() {
     return (
         <Routes>
             <Route path='/' element={<UserDashboard />}>
-                <Route path='/' index element={<Home />} />
+                {/* <Route path='/' index element={<Home />} /> */}
                 <Route path='/info' element={<Info />} />
             </Route>
             <Route path="/login" element={<Login />} />

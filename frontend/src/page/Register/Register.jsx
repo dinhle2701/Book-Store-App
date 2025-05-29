@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useRegister } from '../../query/auth'; // Hook gọi API
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,7 +25,7 @@ const Register = () => {
         setShowPassword(!showPassword);
     };
 
-    const loginMutation = useRegister();
+    const registerMutation = useRegister();
 
 
 
@@ -81,7 +80,7 @@ const Register = () => {
             [name]: error,
         }));
     };
-    
+
 
 
     const handleSignup = (e) => {
@@ -130,7 +129,7 @@ const Register = () => {
         }
 
         // Gửi API nếu hợp lệ
-        loginMutation.mutate(formData, {
+        registerMutation.mutate(formData, {
             onSuccess: (data) => {
                 toast.success('Register successfully!', {
                     position: 'top-right',
@@ -159,74 +158,82 @@ const Register = () => {
 
     return (
         <div className="signup">
-            <ToastContainer />
-            <Container className='form-container d-flex justify-content-center align-items-center' style={{ minHeight: '100vh' }}>
-                <Row className="w-100">
-                    <Col xs={12} sm={10} md={8} lg={6} className="mx-auto">
-                        <div className="form-control p-4">
-                            <h2 className='text-center'>Register</h2>
-                            <Form onSubmit={handleSignup}>
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+                <ToastContainer />
+                <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+                    <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Đăng ký</h2>
+                    <form onSubmit={handleSignup} className="space-y-4">
 
-
-                                <Form.Group className='mb-3'>
-                                    <Form.Label className='fw-bold'>Userame</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        name='username'
-                                        placeholder="Enter your name"
-                                        value={formData.username}
-                                        onChange={handleChange}
-                                    />
-                                    {formErrors.username && <Form.Text className="text-danger">{formErrors.username}</Form.Text>}
-                                </Form.Group>
-                                <Form.Group className='mb-3'>
-                                    <Form.Label className='fw-bold'>Email</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        name='email'
-                                        placeholder="abc@gmail.com"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                    {formErrors.email && <Form.Text className="text-danger">{formErrors.email}</Form.Text>}
-
-                                </Form.Group>
-
-                                <Form.Group className="mb-4">
-                                    <Form.Label className="fw-bold">Password</Form.Label>
-                                    <div className="input-group">
-                                        <Form.Control
-                                            type={showPassword ? "text" : "password"}
-                                            name="password"
-                                            placeholder="Enter your password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            isInvalid={!!formErrors.password}
-                                        />
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-secondary"
-                                            onClick={toggleShowPassword}
-                                            tabIndex={-1}
-                                        >
-                                            {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
-                                        </button>
-                                        <Form.Control.Feedback type="invalid">{formErrors.password}</Form.Control.Feedback>
-                                    </div>
-                                </Form.Group>
-
-                                <Form.Group className='mb-3 text-center'>
-                                    <Button variant='success' className='w-50' type='submit'>Register</Button>
-                                </Form.Group>
-
-                                <Form.Group className='mb-3 text-center'>
-                                    <span className='ms-3'>Have an account? <a className=' text-success' href="/login">Login</a> </span>
-                                </Form.Group>
-                            </Form>
+                        {/* Username */}
+                        <div>
+                            <label className="block font-medium mb-1">Tên người dùng</label>
+                            <input
+                                type="text"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                className={`w-full border px-3 py-2 rounded outline-none ${formErrors.username ? 'border-red-500' : 'border-gray-300'}`}
+                                placeholder="Nhập tên của bạn"
+                            />
+                            {formErrors.username && <p className="text-red-500 text-sm mt-1">{formErrors.username}</p>}
                         </div>
-                    </Col>
-                </Row>
-            </Container>
+
+                        {/* Email */}
+                        <div>
+                            <label className="block font-medium mb-1">Email</label>
+                            <input
+                                type="text"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className={`w-full border px-3 py-2 rounded outline-none ${formErrors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                placeholder="abc@gmail.com"
+                            />
+                            {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
+                        </div>
+
+                        {/* Password */}
+                        <div>
+                            <label className="block font-medium mb-1">Mật khẩu</label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className={`w-full border px-3 py-2 rounded pr-10 outline-none ${formErrors.password ? 'border-red-500' : 'border-gray-300'}`}
+                                    placeholder="Nhập mật khẩu"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={toggleShowPassword}
+                                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
+                                </button>
+                            </div>
+                            {formErrors.password && <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>}
+                        </div>
+
+                        {/* Submit */}
+                        <div className="text-center">
+                            <button
+                                type="submit"
+                                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
+                                disabled={registerMutation.isLoading}
+                            >
+                                {registerMutation.isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
+                            </button>
+                        </div>
+
+                        <p className="text-center mt-3 text-sm text-gray-700">
+                            Đã có tài khoản?
+                            <Link to="/login" className="text-green-600 hover:underline ml-1">Đăng nhập</Link>
+                        </p>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 }

@@ -1,64 +1,59 @@
 import React from 'react';
-import { useUser } from '../../../context/UserContext'; // path đúng
-import { Table, Image, Container, Form, Row, Col } from 'react-bootstrap'
-import './Info.css'
+import { useUser } from '../../../context/UserContext';
 
 const Info = () => {
     const { user } = useUser();
 
     if (!user) {
-        return <p>Loading user information...</p>;
+        return <p className="text-center mt-6">Đang tải thông tin người dùng...</p>;
     }
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        console.log('Selected file:', file);
-        // Bạn có thể upload lên server hoặc lưu vào state
+        console.log('File đã chọn:', file);
+        // Xử lý upload hoặc cập nhật avatar ở đây
     };
 
-
     return (
-        <div className="info mt-4">
-            <h2 className="mb-4 text-center"><strong>USER INFORMATION</strong></h2>
-            <Container className="py-5 info-container">
-                <Row className="align-items-center">
-                    <Col xs={12} md={5} lg={4} className="text-center text-md-center mb-4 mb-md-0">
-                        <Image
-                            src={user.avatar || 'https://randomuser.me/api/portraits/men/32.jpg'}
-                            roundedCircle
-                            className="shadow img-fluid"
-                            style={{ minWidth: '200px', height: 'auto' }}
-                        />
-                        <Form.Group controlId="formFile" className="mt-3 d-flex justify-content-center">
-                            <Form.Control
-                                className="w-100 w-md-75"
-                                type="file"
-                                onChange={handleFileChange}
-                                placeholder="Choose avatar"
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col xs={12} md={7} lg={8}>
-                        <h3 className="mb-4 text-secondary text-center text-md-start">{user.iss || 'Unknown'}</h3>
-                        <Table hover responsive className="text-start">
-                            <tbody>
-                                <tr>
-                                    <th>Email:</th>
-                                    <td>{user.email || 'Unknown'}</td>
-                                </tr>
-                                <tr>
-                                    <th>Role:</th>
-                                    <td>{user.role || 'Unknown'}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </Col>
-                </Row>
+        <div className="mt-6 max-w-5xl mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">THÔNG TIN NGƯỜI DÙNG</h2>
 
+            <div className="flex flex-col md:flex-row items-center md:items-start bg-white shadow-md rounded-lg p-6 gap-6">
 
-            </Container>
+                {/* Avatar + Upload */}
+                <div className="flex flex-col items-center md:w-1/3">
+                    <img
+                        src={user.avatar || 'https://randomuser.me/api/portraits/men/32.jpg'}
+                        alt="Avatar"
+                        className="rounded-full shadow-md w-48 h-48 object-cover"
+                    />
+                    <input
+                        type="file"
+                        onChange={handleFileChange}
+                        className="mt-4 w-full md:w-3/4 text-sm file:mr-4 file:py-2 file:px-4
+                                   file:rounded-full file:border-0 file:text-sm file:font-semibold
+                                   file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                    />
+                </div>
+
+                {/* Info Table */}
+                <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-gray-600 mb-4 text-center md:text-left">
+                        {user.iss || 'Không rõ'}
+                    </h3>
+                    <div className="text-sm text-gray-700">
+                        <div className="flex mb-2">
+                            <span className="font-semibold w-24">Email:</span>
+                            <span>{user.email || 'Không rõ'}</span>
+                        </div>
+                        <div className="flex mb-2">
+                            <span className="font-semibold w-24">Vai trò:</span>
+                            <span>{user.role || 'Không rõ'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     );
 };
 
