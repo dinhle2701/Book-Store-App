@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const { Review } = require('../models/Review');
 
 // [POST] /api/books
 exports.createBook = async (req, res) => {
@@ -26,13 +27,30 @@ exports.getAllBooks = async (req, res) => {
 exports.getBookById = async (req, res) => {
     try {
         const book = await Book.findById(req.params.id);
-        if (!book) return res.status(404).json({ message: 'Book not found' });
-        console.log("Get book by id successfully!")
-        res.json(book);
+        if (!book) return res.status(404).json({ message: 'Không tìm thấy sách' });
+
+        const reviews = await Review.find({ book: req.params.id })
+            .populate('user', 'username') // Lấy username từ User
+            .sort({ createdAt: -1 });
+
+        const result = {
+            ...book.toObject(),
+            reviews: reviews.map(r => ({
+                _id: r._id,
+                rating: r.rating,
+                comment: r.comment,
+                createdAt: r.createdAt,
+                user: r.user?.iss,
+                username: r.user?.username || "Unknown"
+            }))
+        };
+
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
+
 
 // [PUT] /api/books/:id
 exports.updateBook = async (req, res) => {
@@ -58,5 +76,44 @@ exports.deleteBook = async (req, res) => {
         res.json({ message: 'Book deleted' });
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+};
+
+exports.createReview = async (req, res) => {
+    const { bookId, rating, comment } = req.body;
+    const userId = req.user?.id;
+
+    if (!bookId || !rating || !comment || !userId) {
+        return res.status(400).json({ message: "Thiếu thông tin." });
+    }
+
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) return res.status(404).json({ message: "Không tìm thấy sách." });
+
+        const review = new Review({
+            book: bookId,
+            rating,
+            comment,
+            user: userId
+        });
+
+        await review.save();
+        res.status(201).json({ message: "Đánh giá thành công", review });
+    } catch (err) {
+        res.status(500).json({ message: "Lỗi khi tạo đánh giá", error: err.message });
+    }
+};
+
+
+
+
+// [GET] /api/reviews/:bookId
+exports.getReviewsByBook = async (req, res) => {
+    try {
+        const reviews = await Review.find({ book: req.params.bookId }).sort({ createdAt: -1 });
+        res.json(reviews);
+    } catch (err) {
+        res.status(500).json({ message: "Lỗi khi lấy đánh giá", error: err.message });
     }
 };
