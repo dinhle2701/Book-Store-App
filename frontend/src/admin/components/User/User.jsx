@@ -7,7 +7,6 @@ const User = () => {
 
       {/* Danh sách người dùng - Placeholder */}
       <div className="bg-white shadow-md rounded-lg p-6">
-        <p className="text-gray-600">Hiện chưa có dữ liệu người dùng. Tính năng sẽ được cập nhật sau.</p>
         <table className="min-w-full table-auto border">
           <thead className="bg-gray-100">
             <tr>

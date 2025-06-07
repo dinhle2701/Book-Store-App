@@ -1,5 +1,6 @@
 import React from 'react';
 import { useUser } from '../../../context/UserContext';
+import Breadcrumbs from '../../Custom/BreadCrums';
 
 const Info = () => {
     const { user } = useUser();
@@ -16,6 +17,7 @@ const Info = () => {
 
     return (
         <div className="mt-6 max-w-5xl mx-auto px-4">
+            <Breadcrumbs/>
             <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">THÔNG TIN NGƯỜI DÙNG</h2>
 
             <div className="flex flex-col md:flex-row items-center md:items-start bg-white shadow-md rounded-lg p-6 gap-6">

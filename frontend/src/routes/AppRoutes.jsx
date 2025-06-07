@@ -2,7 +2,7 @@
 // routes/AppRouter.jsx
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import Home from "../components/Home/Home.jsx";
+import Home from "../components/User/Home/Home.jsx";
 import Login from "../page/Login/Login.jsx";
 import Register from "../page/Register/Register.jsx";
 import UserDashboard from '../components/Dashboard/UserDashboard.jsx';
@@ -12,14 +12,26 @@ import Book from "../admin/components/Book/Book.jsx";
 import User from "../admin/components/User/User.jsx";
 import Order from "../admin/components/Order/Order.jsx";
 import Dashboard from "../admin/components/Dashboard/Dashboard.jsx";
+import BookDetail from "../components/User/BookDetail/BookDetail.jsx";
+import Cart from "../components/User/Cart/Cart.jsx";
+import BookList from "../components/User/BookList/BookList.jsx";
+import Checkout from "../components/User/Checkout/Checkout.jsx";
+import Favourite from "../components/User/Favourite/Favourite.jsx";
 
 export default function AppRouter() {
     return (
         <Routes>
             <Route path='/' element={<UserDashboard />}>
-                {/* <Route path='/' index element={<Home />} /> */}
+                <Route path='/' index element={<Home />}
+                />
                 <Route path='/info' element={<Info />} />
+                <Route path='/favourite' element={<Favourite />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/books" element={<BookList />} />
+                <Route path="/books/:id" element={<BookDetail />} />
+                <Route path="/checkout" element={<Checkout/>}/>
             </Route>
+
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 

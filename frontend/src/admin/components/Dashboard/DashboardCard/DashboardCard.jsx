@@ -1,23 +1,26 @@
 import React from 'react'
 import { User, BookOpen, ShoppingCart } from 'lucide-react'
+import { useGetStat } from '../../../../query/stat'
 
 const DashboardCard = () => {
+    const { data: stat, isLoading } = useGetStat()
+
     const stats = [
         {
             title: 'Users',
-            count: 120,
+            count: stat?.usersCount ?? 0,
             icon: <User className="w-8 h-8 text-blue-600" />,
-            color: 'bg-blue-100'
+            color: 'bg-blue-100',
         },
         {
             title: 'Books',
-            count: 230,
+            count: stat?.booksCount ?? 0,
             icon: <BookOpen className="w-8 h-8 text-green-600" />,
-            color: 'bg-green-100'
+            color: 'bg-green-100',
         },
         {
             title: 'Orders',
-            count: 45,
+            count: stat?.ordersCount ?? 0,
             icon: <ShoppingCart className="w-8 h-8 text-orange-600" />,
             color: 'bg-orange-100'
         }
@@ -30,7 +33,9 @@ const DashboardCard = () => {
                     <div className="p-3 bg-white rounded-full shadow">{item.icon}</div>
                     <div>
                         <p className="text-sm text-gray-600">{item.title}</p>
-                        <h2 className="text-2xl font-bold text-gray-800">{item.count}</h2>
+                        <h2 className="text-2xl font-bold text-gray-800">
+                            {isLoading ? '...' : item.count}
+                        </h2>
                     </div>
                 </div>
             ))}
