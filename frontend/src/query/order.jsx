@@ -14,10 +14,10 @@ export function useGetAllOrders() {
 // 🔸 Lấy đơn hàng theo email user
 export function useGetOrdersByUser(email) {
     return useQuery({
-        queryKey: ['user-orders', email],
+        queryKey: ['orders', email],
         queryFn: () =>
             axios
-                .get(`${API_PATHS.order}/user/order`, { params: { email } })
+                .get(`${API_PATHS.order}/orders/user/${encodeURIComponent(email)}`)
                 .then((res) => res.data),
         enabled: !!email, // Chỉ chạy khi có email
     });

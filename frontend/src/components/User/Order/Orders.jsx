@@ -1,0 +1,81 @@
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import { useGetOrdersByUser } from '../../../query/order';
+import { useUser } from '../../../context/UserContext';
+import Breadcrumbs from '../../Custom/BreadCrums';
+
+const Orders = () => {
+  const { user } = useUser();
+  const email = user?.email;
+
+  const { data: orders = [], isLoading, isError } = useGetOrdersByUser(email);
+
+  // if (isLoading) return <p>Loading...</p>;
+  // if (isError) return <p>Đã xảy ra lỗi khi tải đơn hàng.</p>;
+
+  return (
+    <>
+      <div className='px-6 max-w-screen-xl mx-auto'>
+        <Breadcrumbs />
+      </div>
+      <div className="order max-w-7xl mx-auto my-12 items-center gap-8">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">ORDERS</h2>
+        <div className="bg-white shadow-md rounded-lg p-6 overflow-x-auto">
+          {orders.length === 0 ? (
+            <p className="text-gray-500 mt-4">Không có đơn hàng nào.</p>
+          ) : (
+            <table className="min-w-full table-auto text-sm text-center text-gray-700">
+              <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
+                <tr>
+                  <th className="px-6 py-3">STT</th>
+                  <th className="px-6 py-3">Email</th>
+                  <th className="px-6 py-3">Address</th>
+                  <th className="px-6 py-3">Phone</th>
+                  <th className="px-6 py-3">Status</th>
+                  <th className="px-6 py-3">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order, index) => (
+                  <tr key={order._id} className="border-b hover:bg-gray-50 hover:cursor-pointer">
+                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="px-6 py-4">{order.email}</td>
+                    <td className="px-6 py-4">{order.address}</td>
+                    <td className="px-6 py-4">{order.phone}</td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${order.status === 'Pending'
+                          ? 'bg-gray-100 text-gray-800'
+                          : order.status === 'Processing'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : order.status === 'Shipped'
+                              ? 'bg-blue-100 text-blue-800'
+                              : order.status === 'Delivered'
+                                ? 'bg-green-100 text-green-800'
+                                : order.status === 'Cancelled'
+                                  ? 'bg-red-100 text-red-800'
+                                  : order.status === 'Refunded'
+                                    ? 'bg-purple-100 text-purple-800'
+                                    : order.status === 'Failed'
+                                      ? 'bg-pink-100 text-pink-800'
+                                      : 'bg-gray-200 text-gray-600'
+                          }`}
+                      >
+                        {order.status || 'N/A'}
+                      </span>
+                    </td>
+
+
+                    <td className="px-6 py-4">{order.total?.toLocaleString()}đ</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Orders;

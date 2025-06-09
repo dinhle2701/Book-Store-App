@@ -31,6 +31,14 @@ const Checkout = () => {
             return;
         }
 
+        const phoneRegex = /^0\d{9}$/; // Bắt đầu bằng 0, theo sau là 9 chữ số (tổng 10 số)
+
+        if (!phoneRegex.test(phone)) {
+            alert('Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 chữ số.');
+            return;
+        }
+
+
 
         const orderData = {
             name: user?.iss,

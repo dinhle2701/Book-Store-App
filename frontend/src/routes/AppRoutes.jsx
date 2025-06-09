@@ -17,6 +17,7 @@ import Cart from "../components/User/Cart/Cart.jsx";
 import BookList from "../components/User/BookList/BookList.jsx";
 import Checkout from "../components/User/Checkout/Checkout.jsx";
 import Favourite from "../components/User/Favourite/Favourite.jsx";
+import Orders from "../components/User/Order/Orders.jsx";
 
 export default function AppRouter() {
     return (
@@ -26,6 +27,7 @@ export default function AppRouter() {
                 />
                 <Route path='/info' element={<Info />} />
                 <Route path='/favourite' element={<Favourite />} />
+                <Route path='/orders' element={<Orders />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/books" element={<BookList />} />
                 <Route path="/books/:id" element={<BookDetail />} />
@@ -38,6 +40,7 @@ export default function AppRouter() {
             <Route path='/admin' element={<AdminDashboard />}>
                 <Route path='/admin' element={<Dashboard />} />
                 <Route path='/admin/books' element={<Book />} />
+                <Route path='/admin/book' element={<BookDetail/>}/>
                 <Route path='/admin/users' element={<User />} />
                 <Route path='/admin/orders' element={<Order />} />
             </Route>

@@ -12,7 +12,8 @@ const CreateBookModal = ({ isOpen, onClose }) => {
         publisher: "",
         author: "",
         count: "",
-        type: ""
+        type: "",
+        image: null,
     });
 
     const createBook = useCreateBook();
@@ -21,10 +22,20 @@ const CreateBookModal = ({ isOpen, onClose }) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setFormData((prev) => ({ ...prev, image: file }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        createBook.mutate(formData, {
+
+        const payload = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+            payload.append(key, value);
+        });
+
+        createBook.mutate(payload, {
             onSuccess: () => {
                 showToast('📘 Book created successfully!', 'success');
                 setFormData({
@@ -34,7 +45,8 @@ const CreateBookModal = ({ isOpen, onClose }) => {
                     publisher: "",
                     author: "",
                     count: "",
-                    type: ""
+                    type: "",
+                    image: null
                 });
                 onClose();
             },
@@ -47,9 +59,14 @@ const CreateBookModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-            onClick={onClose}>
-            <div className="bg-white rounded-2xl shadow-lg w-full max-w-xl p-6 relative">
+        <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            onClick={onClose} // Click ngoài modal thì đóng
+        >
+            <div
+                className="bg-white rounded-2xl shadow-lg w-full max-w-xl p-6 relative"
+                onClick={(e) => e.stopPropagation()} // Ngăn không cho click bên trong modal làm đóng modal
+            >
                 <button
                     onClick={onClose}  // gọi trực tiếp hàm onClose
                     className="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold"
@@ -111,7 +128,7 @@ const CreateBookModal = ({ isOpen, onClose }) => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Publisher</label>
                         <select
-                            name="type"
+                            name="publisher"
                             value={formData.publisher}
                             onChange={handleChange}
                             required
@@ -158,6 +175,17 @@ const CreateBookModal = ({ isOpen, onClose }) => {
                             name="count"
                             value={formData.count}
                             onChange={handleChange}
+                            required
+                            className="w-full border border-gray-300 rounded-xl p-2 mt-1"
+                        />
+                    </div>
+                    <div className="col-span-2">
+                        <label className="block text-sm font-medium text-gray-700">Book Image</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            name="image"
+                            onChange={handleImageChange}
                             required
                             className="w-full border border-gray-300 rounded-xl p-2 mt-1"
                         />

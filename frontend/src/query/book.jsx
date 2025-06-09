@@ -24,13 +24,18 @@ export function useGetBookById(id) {
 export function useCreateBook() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newBook) =>
-            axios.post(`${API_PATHS.book}/book`, newBook).then(res => res.data),
+        mutationFn: (formData) =>
+            axios.post(`${API_PATHS.book}/book`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }).then(res => res.data),
         onSuccess: () => {
             queryClient.invalidateQueries(['books']);
         },
     });
 }
+
 
 // Cập nhật sách
 export function useUpdateBook() {

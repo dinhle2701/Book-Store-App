@@ -13,6 +13,9 @@ const CustomNavbar = () => {
     window.location.href = '/info';
   };
 
+  const handleOrder = () => {
+    window.location.href = '/orders';
+  };
   const handleLogout = () => {
     const confirmed = window.confirm("Bạn có chắc chắn muốn đăng xuất không?");
     if (confirmed) {
@@ -69,7 +72,7 @@ const CustomNavbar = () => {
             <Link to="/" title="Home" className="hover:text-green-600">
               <Home className="w-5 h-5" />
             </Link>
-            <Link to="/favorites" title="Favorites" className="hover:text-green-600">
+            <Link to="/favourite" title="Favorites" className="hover:text-green-600">
               <Heart className="w-5 h-5" />
             </Link>
             <Link to="/cart" title="Cart" className="hover:text-green-600">
@@ -91,12 +94,18 @@ const CustomNavbar = () => {
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
+                  <div className="absolute text-center right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
                     <button
                       onClick={handleInformation}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                     >
                       Info
+                    </button>
+                    <button
+                      onClick={handleOrder}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                    >
+                      Orders
                     </button>
                     <button
                       onClick={handleLogout}

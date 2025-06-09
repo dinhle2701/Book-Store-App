@@ -46,7 +46,28 @@ const Order = () => {
                 <td className="px-6 py-4">{order.email}</td>
                 <td className="px-6 py-4">{order.address}</td>
                 <td className="px-6 py-4">{order.phone}</td>
-                <td className="px-6 py-4">{order.status || 'N/A'}</td>
+                <td className="px-6 py-4">
+                  <button
+                    className={`px-2 rounded-md ${order.status === 'Pending'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : order.status === 'Processing'
+                        ? 'bg-blue-100 text-blue-800'
+                        : order.status === 'Shipped'
+                          ? 'bg-purple-100 text-purple-800'
+                          : order.status === 'Delivered'
+                            ? 'bg-green-100 text-green-800'
+                            : order.status === 'Cancelled'
+                              ? 'bg-red-100 text-red-800'
+                              : order.status === 'Refunded'
+                                ? 'bg-teal-100 text-teal-800'
+                                : order.status === 'Failed'
+                                  ? 'bg-gray-300 text-gray-800'
+                                  : 'bg-gray-100 text-gray-600'
+                      }`}
+                  >
+                    {order.status || 'N/A'}
+                  </button>
+                </td>
                 <td className="px-6 py-4">{order.total?.toLocaleString()}đ</td>
                 <td className="px-6 py-4 flex items-center justify-center gap-2">
                   <button

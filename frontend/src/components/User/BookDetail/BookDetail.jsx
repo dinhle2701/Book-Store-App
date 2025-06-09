@@ -5,6 +5,7 @@ import { useGetBookById, useAddReview } from '../../../query/book';
 import { useUser } from '../../../context/UserContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../context/ToastContext';
+import API_PATHS from '../../../constant/apiPath'
 
 const BookDetail = () => {
     const { id } = useParams();
@@ -83,9 +84,9 @@ const BookDetail = () => {
 
             <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-2xl overflow-hidden text-start">
                 <img
-                    src={book.imageUrl || 'https://via.placeholder.com/300x400?text=No+Image'}
+                    src={book.img ? `${API_PATHS.img}/${book.img}` : `http://localhost:5555/${book.image}`}
                     alt={book.bookName}
-                    className="w-full md:w-1/3 object-cover text-center"
+                    className="w-full md:w-1/3 object-cover text-center p-6"
                 />
                 <div className="p-6 flex-1">
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">{book.bookName}</h1>
