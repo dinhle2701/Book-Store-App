@@ -38,12 +38,19 @@ const CustomNavbar = () => {
       <Container>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="text-decoration-none text-black text-2xl font-bold flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 text-decoration-none text-black font-bold">
             <Store className="w-6 h-6 text-green-600" />
-            <span>
+
+            {/* Mobile: Hiển thị viết tắt */}
+            <span className="text-green-600 text-xl sm:hidden">BS</span>
+
+            {/* Desktop: Hiển thị đầy đủ */}
+            <span className="hidden sm:inline text-xl md:text-2xl">
               <span className="text-green-600">B</span>ook Store
             </span>
           </Link>
+
+
 
           {/* Search */}
           <div className="flex-grow max-w-xl w-full">

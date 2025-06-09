@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useUser } from '../../../context/UserContext';
-import { useCart } from '../../../context/CartContext'; // bạn cần có context giỏ hàng
+import { useCart } from '../../../context/CartContext';
 import Breadcrumbs from '../../Custom/BreadCrums';
+import { useCreateOrder } from '../../../query/order'; // ✅ IMPORT hàm tạo đơn hàng
 
 const Checkout = () => {
-    const { user } = useUser(); // từ UserProvider
-    const { cartItems } = useCart(); // từ CartProvider
+    const { user } = useUser();
+    const { cartItems, clearCart } = useCart(); // ✅ clearCart nếu bạn đã có trong CartContext
     const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
+
+    const { mutate: createOrder, isLoading } = useCreateOrder(); // ✅ React Query Mutation
 
     const handleCheckout = (e) => {
         e.preventDefault();
@@ -22,17 +26,34 @@ const Checkout = () => {
             return;
         }
 
+        if (!phone.trim()) {
+            alert('Vui lòng nhập số điện thoại.');
+            return;
+        }
+
+
         const orderData = {
-            name: user?.name,
+            name: user?.iss,
             email: user?.email,
-            phone: user?.phone,
+            phone,
             address,
-            cartItems
+            cartItems,
+            status: "AWAITING_CONFIRM"
         };
 
-        console.log('Đơn hàng:', orderData);
-        alert('Đặt hàng thành công!');
-        // Gửi orderData đến server qua API tại đây
+        createOrder(orderData, {
+            onSuccess: () => {
+                alert('Đặt hàng thành công!');
+                setAddress('');
+                setPhone('')
+                clearCart?.(); // ✅ reset giỏ hàng nếu bạn có hàm này
+            },
+            onError: (error) => {
+                alert('Đã xảy ra lỗi khi đặt hàng.');
+                console.log(error)
+                console.log(orderData)
+            },
+        });
     };
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -72,8 +93,9 @@ const Checkout = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Phone number</label>
                             <input
-                                type="text"
-                                value={user?.phone || ''}
+                                type="number"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                                 className="w-full mt-1 px-4 py-2 border rounded"
                             />
                         </div>
@@ -91,9 +113,10 @@ const Checkout = () => {
 
                         <button
                             type="submit"
-                            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+                            disabled={isLoading}
+                            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition disabled:opacity-50"
                         >
-                            Xác nhận đặt hàng
+                            {isLoading ? 'Đang xử lý...' : 'Xác nhận đặt hàng'}
                         </button>
                     </form>
                 </div>
@@ -105,10 +128,13 @@ const Checkout = () => {
                         <p>Không có sản phẩm trong giỏ hàng.</p>
                     ) : (
                         <ul className="divide-y divide-gray-200 space-y-4">
-                            {cartItems.map(item => (
+                            {cartItems.map((item) => (
                                 <li key={item.id} className="flex justify-between align-middle items-center py-2">
                                     <img
-                                        src={item.imageUrl || "https://cdn.dribbble.com/userupload/35052164/file/original-b3db7ed57304fcc24e7adc9bff15cc8c.png?resize=752x&vertical=center"}
+                                        src={
+                                            item.imageUrl ||
+                                            'https://cdn.dribbble.com/userupload/35052164/file/original-b3db7ed57304fcc24e7adc9bff15cc8c.png?resize=752x&vertical=center'
+                                        }
                                         alt={item.bookName}
                                         className="w-full md:w-1/6 object-cover text-center"
                                     />

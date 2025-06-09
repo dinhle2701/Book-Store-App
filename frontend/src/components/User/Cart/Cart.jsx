@@ -37,11 +37,10 @@ const Cart = () => {
                                     <div key={item.id}>
                                         <div className="flex items-start justify-between gap-4">
                                             <img src={item.image} alt={item.title} className="w-32 h-32 object-cover rounded" />
-                                            <div className="flex-1">
-                                                <h3 className="font-semibold text-lg">{item.title}</h3>
-                                                <p className="text-sm text-gray-600">Variant: {item.variant}</p>
-                                                <p className="text-sm text-gray-600">Size: {item.size}</p>
-                                                <p className="text-sm text-gray-600">Color: {item.color}</p>
+                                            <div className="flex-1 text-start items-start">
+                                                <h3 className="font-semibold text-lg">{item.bookName}</h3>
+                                                <p className="text-sm text-gray-600">Type: {item.type}</p>
+                                                <p className="text-sm text-gray-600">Count: {item.count}</p>
                                             </div>
                                             <div className="flex flex-col items-end gap-3">
                                                 <p className="font-bold text-lg">{(item.price * item.quantity).toFixed(0)} đ</p>
@@ -87,7 +86,7 @@ const Cart = () => {
                         </div>
                     </div>
                     <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
-                    onClick={() => navigate(`/checkout`)}>
+                        onClick={() => navigate(`/checkout`)}>
                         Checkout
                     </button>
                     <p className="text-sm text-blue-600 underline text-center mt-3 cursor-pointer">

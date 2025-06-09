@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGetBookById, useAddReview } from '../../../query/book';
 import { useUser } from '../../../context/UserContext';
 import { useQueryClient } from '@tanstack/react-query';
+import { useToast } from '../../../context/ToastContext';
 
 const BookDetail = () => {
     const { id } = useParams();
@@ -14,6 +15,9 @@ const BookDetail = () => {
     const navigate = useNavigate();
     const { data: book, isLoading, isError, error } = useGetBookById(id);
     const { mutate: addReview } = useAddReview();
+
+    const { showToast } = useToast();
+
 
     // Lấy reviews từ book, nếu chưa có thì mặc định mảng rỗng
     const reviews = book?.reviews || [];
@@ -45,7 +49,8 @@ const BookDetail = () => {
 
         addReview(reviewData, {
             onSuccess: () => {
-                alert('Đánh giá của bạn đã được gửi!');
+                showToast('📘 Your comment had send!', 'success');
+                // alert('Đánh giá của bạn đã được gửi!');
                 setRating(0);
                 setComment('');
                 // Refetch lại dữ liệu book (bao gồm reviews)

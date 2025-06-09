@@ -9,9 +9,12 @@ import {
 } from '../../../query/book';
 import CreateBookModal from './CreateBook.jsx'; // Đảm bảo đúng đường dẫn
 import UpdateBookModal from './UpdateBook.jsx'; // Đảm bảo đúng đường dẫn
+import { useToast } from '../../../context/ToastContext';
 
 
 const Book = () => {
+    const { showToast } = useToast();
+
     const { data: books = [], isLoading, isError, error } = useGetBooks();
     const [showModal, setShowModal] = useState(false);
 
@@ -22,10 +25,10 @@ const Book = () => {
         if (confirmed) {
             deleteBook.mutate(id, {
                 onSuccess: () => {
-                    alert("Xóa sách thành công!");
+                    showToast('Delete book successfully!', 'success');
                 },
                 onError: (err) => {
-                    alert("Lỗi khi xóa sách: " + err.message);
+                    alert("Failed to delete book!" + err.message);
                 }
             });
         }
@@ -76,7 +79,7 @@ const Book = () => {
                         </thead>
                         <tbody>
                             {books.map((book, index) => (
-                                <tr key={index} className="border-b hover:bg-gray-50">
+                                <tr key={index} className="border-b hover:bg-gray-50 hover:cursor-pointer">
                                     <td className="px-6 py-4">{book.bookName}</td>
                                     <td className="px-6 py-4">{book.author}</td>
                                     <td className="px-6 py-4">{book.count}</td>

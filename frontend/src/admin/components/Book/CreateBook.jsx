@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useCreateBook } from "../../../query/book";
+import { useToast } from '../../../context/ToastContext';
 
 const CreateBookModal = ({ isOpen, onClose }) => {
+    const { showToast } = useToast();
+
     const [formData, setFormData] = useState({
         bookName: "",
         price: "",
@@ -23,7 +26,7 @@ const CreateBookModal = ({ isOpen, onClose }) => {
         e.preventDefault();
         createBook.mutate(formData, {
             onSuccess: () => {
-                alert("📘 Book created successfully!");
+                showToast('📘 Book created successfully!', 'success');
                 setFormData({
                     bookName: "",
                     price: "",
@@ -36,7 +39,7 @@ const CreateBookModal = ({ isOpen, onClose }) => {
                 onClose();
             },
             onError: (error) => {
-                alert("❌ Failed to create book: " + error.message);
+                showToast("❌ Failed to create book: " + error.message);
             }
         });
     };
@@ -44,14 +47,16 @@ const CreateBookModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            onClick={onClose}>
             <div className="bg-white rounded-2xl shadow-lg w-full max-w-xl p-6 relative">
                 <button
-                    onClick={() => onClose}
+                    onClick={onClose}  // gọi trực tiếp hàm onClose
                     className="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl font-bold"
                 >
                     &times;
                 </button>
+
                 <h2 className="text-2xl font-bold mb-6 text-center">➕ Create New Book</h2>
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
@@ -80,7 +85,7 @@ const CreateBookModal = ({ isOpen, onClose }) => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Type</label>
+                        <label className="block text-sm font-medium text-gray-700">Book Type</label>
                         <select
                             name="type"
                             value={formData.type}
@@ -88,22 +93,39 @@ const CreateBookModal = ({ isOpen, onClose }) => {
                             required
                             className="w-full border border-gray-300 rounded-xl p-2 mt-1"
                         >
-                            <option value="">-- Chọn loại bìa --</option>
-                            <option value="Bìa mềm">Bìa mềm</option>
-                            <option value="Bìa cứng tiếng Anh">Bìa cứng tiếng Anh</option>
+                            <option value="">-- Choose book type --</option>
+                            <option value="Self-Help">Self-Help</option>
+                            <option value="Inspirational">Inspirational</option>
+                            <option value="Science and technology">Science and technology</option>
+                            <option value="Cookbooks">Cookbooks</option>
+                            <option value="Horror and mystery">Horror and mystery</option>
+                            <option value="History">History</option>
+                            <option value="Social and cultural">Social and cultural </option>
+                            <option value="Religious">Religious</option>
+                            <option value="Psychological and emotional">Psychological and emotional</option>
+                            <option value="English">English</option>
+                            <option value="Exam preparation">Exam preparation</option>
                         </select>
                     </div>
 
-
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Publisher</label>
-                        <input
-                            type="text"
-                            name="publisher"
+                        <select
+                            name="type"
                             value={formData.publisher}
                             onChange={handleChange}
+                            required
                             className="w-full border border-gray-300 rounded-xl p-2 mt-1"
-                        />
+                        >
+                            <option value="">-- Choose book type --</option>
+                            <option value="Vietnam Education Publishing House">Vietnam Education Publishing House</option>
+                            <option value="Youth Publishing House">Youth Publishing House</option>
+                            <option value="Kim Dong Publishing House">Kim Dong Publishing House</option>
+                            <option value="Literature Publishing House">Literature Publishing House</option>
+                            <option value="Ho Chi Minh City General Publishing House">Ho Chi Minh City General Publishing House</option>
+                            <option value="National Political Publishing House – Truth">National Political Publishing House – Truth</option>
+                            <option value="Labor Publishing House">Labor Publishing House</option>
+                        </select>
                     </div>
 
                     <div>

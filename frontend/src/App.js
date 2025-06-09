@@ -1,9 +1,11 @@
+/* eslint-disable no-lone-blocks */
 /* eslint-disable no-unused-vars */
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { UserProvider } from './context/UserContext'; // đường dẫn đúng theo project bạn
-import { CartProvider  } from './context/CartContext.jsx';
+import { CartProvider } from './context/CartContext.jsx';
+import { ToastProvider } from './context/ToastContext.jsx';
 import AppRoutes from './routes/AppRoutes.jsx';
 
 function App() {
@@ -12,18 +14,12 @@ function App() {
       <UserProvider>
         <CartProvider >
           <BrowserRouter>
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
+            <ToastProvider>
+              <AppRoutes />
+            </ToastProvider>
+            
             {/* <UserDashboard/> */}
-            <AppRoutes />
+
 
           </BrowserRouter>
         </CartProvider >
@@ -33,3 +29,13 @@ function App() {
 }
 
 export default App;
+{/* <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            /> */}
