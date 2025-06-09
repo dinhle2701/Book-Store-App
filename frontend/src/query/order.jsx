@@ -24,16 +24,21 @@ export function useGetOrdersByUser(email) {
 }
 
 // 🔸 Lấy chi tiết đơn hàng theo ID và email user
-export function useGetOrderDetailByUser(orderId, email) {
+export const useGetOrderDetailByUser = (orderId, email) => {
     return useQuery({
-        queryKey: ['order-detail', orderId, email],
-        queryFn: () =>
-            axios
-                .get(`${API_PATHS.order}/user/order/${orderId}`, { params: { email } })
-                .then((res) => res.data),
-        enabled: !!orderId && !!email,
+        queryKey: ['order-detail-user', orderId, email],
+        queryFn: async () => {
+            const res = await axios.get(`${API_PATHS.order}/orders/user/order/${orderId}`, {
+                headers: {
+                    'X-User-Email': email
+                }
+            });
+            return res.data;
+        },
+        enabled: !!orderId && !!email // Chỉ fetch nếu có orderId và email
     });
-}
+};
+
 
 // 🔸 Tạo mới đơn hàng
 export function useCreateOrder() {

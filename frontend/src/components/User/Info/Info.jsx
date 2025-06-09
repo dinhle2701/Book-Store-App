@@ -22,7 +22,7 @@ const Info = () => {
             </div>
             <div className="mt-6 max-w-5xl mx-auto px-4">
 
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">INFORMATION</h2>
+                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">THÔNG TIN CÁ NHÂN</h2>
 
                 <div className="flex flex-col md:flex-row items-center md:items-start bg-white shadow-md rounded-lg p-6 gap-6">
 

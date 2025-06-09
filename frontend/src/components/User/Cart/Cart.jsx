@@ -4,7 +4,7 @@ import { Heart, Trash, Minus, Plus } from 'lucide-react';
 import Breadcrumbs from '../../Custom/BreadCrums';
 import { useCart } from '../../../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-
+import API_PATHS from '../../../constant/apiPath';
 
 const Cart = () => {
     const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
@@ -27,7 +27,7 @@ const Cart = () => {
             <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* LEFT: Product List */}
                 <div className="md:col-span-2 bg-white px-6 py-4">
-                    <h2 className="text-3xl text-start font-bold mb-6">Cart</h2>
+                    <h2 className="text-3xl text-start font-bold mb-6">Giỏ hàng</h2>
                     <div className="space-y-6">
                         {cartItems.length === 0 ? (
                             <p className="text-center text-gray-500">Giỏ hàng trống, tiếp tục mua sắm</p>
@@ -36,7 +36,7 @@ const Cart = () => {
                                 {cartItems.map((item) => (
                                     <div key={item.id}>
                                         <div className="flex items-start justify-between gap-4">
-                                            <img src={item.image} alt={item.title} className="w-32 h-32 object-cover rounded" />
+                                            <img src={item.img ? `${API_PATHS.img}/${item.img}` : 'https://via.placeholder.com/200x280'} alt={item.title} className="w-32 h-32 object-cover rounded" />
                                             <div className="flex-1 text-start items-start">
                                                 <h3 className="font-semibold text-lg">{item.bookName}</h3>
                                                 <p className="text-sm text-gray-600">Type: {item.type}</p>
@@ -65,32 +65,32 @@ const Cart = () => {
 
                 {/* RIGHT: Order Summary */}
                 <div className="bg-white p-6 rounded shadow-md h-fit">
-                    <h3 className="text-3xl text-start font-semibold mb-4">Order Summary</h3>
+                    <h3 className="text-3xl text-start font-semibold mb-4">Tóm tắt đơn hàng</h3>
                     <div className="space-y-2 text-sm text-gray-700 mb-4">
                         <div className="flex justify-between">
-                            <span>Subtotal</span>
+                            <span>Tổng cộng</span>
                             <span>{subtotal.toFixed(0)} đ</span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Delivery</span>
+                            <span>Phí vận chuyển</span>
                             <span>{delivery.toFixed(0)} đ</span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Discount</span>
+                            <span>Giảm giá</span>
                             <span>-</span>
                         </div>
                         <hr className="my-2" />
                         <div className="flex justify-between font-semibold text-lg">
-                            <span>Total</span>
+                            <span>Tổng tiền</span>
                             <span>{total.toFixed(0)} VND</span>
                         </div>
                     </div>
                     <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
                         onClick={() => navigate(`/checkout`)}>
-                        Checkout
+                        Thanh toán
                     </button>
                     <p className="text-sm text-blue-600 underline text-center mt-3 cursor-pointer">
-                        Use a promo code
+                        Sử dụng mã giảm giá
                     </p>
                 </div>
             </div>

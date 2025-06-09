@@ -4,6 +4,7 @@ import { useUser } from '../../../context/UserContext';
 import { useCart } from '../../../context/CartContext';
 import Breadcrumbs from '../../Custom/BreadCrums';
 import { useCreateOrder } from '../../../query/order'; // ✅ IMPORT hàm tạo đơn hàng
+import API_PATHS from '../../../constant/apiPath';
 
 const Checkout = () => {
     const { user } = useUser();
@@ -75,11 +76,11 @@ const Checkout = () => {
             <div className="max-w-7xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
                 {/* LEFT: Thông tin thanh toán */}
                 <div className="bg-white shadow-md rounded p-8">
-                    <h2 className="text-2xl font-bold mb-6">Payment Information</h2>
+                    <h2 className="text-2xl font-bold mb-6">Thông tin cá nhân</h2>
 
                     <form onSubmit={handleCheckout} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Full name</label>
+                            <label className="block text-sm font-medium text-gray-700">Họ và tên</label>
                             <input
                                 type="text"
                                 value={user?.iss || ''}
@@ -99,7 +100,7 @@ const Checkout = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Phone number</label>
+                            <label className="block text-sm font-medium text-gray-700">Số điện thoại</label>
                             <input
                                 type="number"
                                 value={phone}
@@ -109,7 +110,7 @@ const Checkout = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Address</label>
+                            <label className="block text-sm font-medium text-gray-700">Địa chỉ</label>
                             <textarea
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
@@ -131,7 +132,7 @@ const Checkout = () => {
 
                 {/* RIGHT: Thông tin sản phẩm trong giỏ */}
                 <div className="bg-white shadow-md rounded p-8">
-                    <h2 className="text-2xl font-semibold mb-4">Product in cart</h2>
+                    <h2 className="text-2xl font-semibold mb-4">Sản phẩm trong giỏ</h2>
                     {cartItems.length === 0 ? (
                         <p>Không có sản phẩm trong giỏ hàng.</p>
                     ) : (
@@ -139,12 +140,10 @@ const Checkout = () => {
                             {cartItems.map((item) => (
                                 <li key={item.id} className="flex justify-between align-middle items-center py-2">
                                     <img
-                                        src={
-                                            item.imageUrl ||
-                                            'https://cdn.dribbble.com/userupload/35052164/file/original-b3db7ed57304fcc24e7adc9bff15cc8c.png?resize=752x&vertical=center'
-                                        }
+                                        src={item.img ? `${API_PATHS.img}/${item.img}` : 'https://via.placeholder.com/200x280'}
                                         alt={item.bookName}
-                                        className="w-full md:w-1/6 object-cover text-center"
+                                        width={'40px'} height={'40px'}
+                                        className="object-cover text-center"
                                     />
                                     <div className="w-80">
                                         <p className="font-medium text-sm truncate">{item.bookName}</p>
@@ -161,7 +160,7 @@ const Checkout = () => {
                     )}
                     <hr className="my-4" />
                     <div className="text-lg font-bold text-right">
-                        Total: {total.toLocaleString()} VND
+                        Tổng tiền: {total.toLocaleString()} VND
                     </div>
                 </div>
             </div>
