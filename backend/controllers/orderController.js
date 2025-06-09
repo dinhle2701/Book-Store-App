@@ -56,6 +56,7 @@ exports.createOrder = async (req, res) => {
 
 
 // [GET] /api/orders - Lấy toàn bộ đơn hàng (admin)
+
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
@@ -96,7 +97,7 @@ exports.getOrdersByUser = async (req, res) => {
 exports.getOrderDetailByUser = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { email } = req.query;
+    const email = req.headers['x-user-email']; // Lấy từ header custom 'x-user-email'
 
     if (!email) {
       return res.status(400).json({ message: 'Thiếu email người dùng' });
@@ -114,3 +115,4 @@ exports.getOrderDetailByUser = async (req, res) => {
     res.status(500).json({ message: 'Lỗi server' });
   }
 };
+
