@@ -91,7 +91,7 @@ const BookList = () => {
                                 {filteredBooks.map((book) => (
                                     <div
                                         key={book._id}
-                                        className="bg-white rounded-2xl shadow hover:shadow-xl transition duration-300 p-4 flex flex-col"
+                                        className="bg-white text-left rounded-2xl shadow hover:shadow-xl transition duration-300 p-4 flex flex-col"
                                     >
                                         <img
                                             onClick={() => navigate(`/books/${book._id}`)}

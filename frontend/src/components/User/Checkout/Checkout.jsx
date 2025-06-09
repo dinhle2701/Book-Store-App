@@ -47,7 +47,7 @@ const Checkout = () => {
             phone,
             address,
             cartItems,
-            status: "AWAITING_CONFIRM"
+            status: "Pending"
         };
 
         createOrder(orderData, {

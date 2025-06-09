@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useUser } from '../../../context/UserContext';
+import { useCart } from '../../../context/CartContext'; // chỉnh path nếu khác
 import { Home, ShoppingCart, Heart, Store, Search } from "lucide-react";
 import Container from '../../Custom/Container.jsx'
 
@@ -8,6 +9,9 @@ const CustomNavbar = () => {
   const { user, setUser } = useUser();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
+  const { cartItems } = useCart();
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
 
   const handleInformation = () => {
     window.location.href = '/info';
@@ -35,6 +39,7 @@ const CustomNavbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
 
   return (
     <nav className="bg-white shadow-sm w-full py-2 px-4 md:px-10 sticky top-0 z-50">
@@ -75,9 +80,15 @@ const CustomNavbar = () => {
             <Link to="/favorites" title="Favorites" className="hover:text-green-600">
               <Heart className="w-5 h-5" />
             </Link>
-            <Link to="/cart" title="Cart" className="hover:text-green-600">
+            <Link to="/cart" title="Cart" className="relative hover:text-green-600">
               <ShoppingCart className="w-5 h-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
             </Link>
+
 
             {user ? (
               <div className="relative" ref={dropdownRef}>

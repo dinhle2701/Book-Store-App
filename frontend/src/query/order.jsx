@@ -51,3 +51,18 @@ export function useCreateOrder() {
         },
     });
 }
+
+export function useUpdateOrderStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ orderId, status }) =>
+      axios.put(`${API_PATHS.order}/orders/${orderId}/status`, { status }).then((res) => res.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['orders']); // Làm mới danh sách đơn hàng
+    },
+    onError: (error) => {
+      console.error('Lỗi khi cập nhật trạng thái đơn hàng:', error);
+    },
+  });
+}

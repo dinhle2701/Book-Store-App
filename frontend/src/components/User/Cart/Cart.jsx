@@ -9,10 +9,6 @@ import API_PATHS from '../../../constant/apiPath';
 const Cart = () => {
     const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
 
-    const removeItem = (id) => {
-        removeFromCart(prev => prev.filter(item => item.id !== id));
-    };
-
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const delivery = cartItems.length > 0 ? 0 : 0;
     const total = subtotal + delivery;

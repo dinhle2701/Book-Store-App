@@ -66,35 +66,39 @@ const Book = () => {
                 ) : books.length === 0 ? (
                     <p className="text-center text-gray-500">Không có sách nào.</p>
                 ) : (
-                    <table className="min-w-full text-sm text-center text-gray-700">
-                        <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
-                            <tr>
-                                <th className="px-6 py-3">Title</th>
-                                <th className="px-6 py-3">Tác giả</th>
-                                <th className="px-6 py-3">Số lượng</th>
-                                <th className="px-6 py-3">Loại</th>
-                                <th className="px-6 py-3">Đã bán</th>
-                                <th className="px-6 py-3">Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {books.map((book, index) => (
-                                <tr key={index} className="border-b hover:bg-gray-50 hover:cursor-pointer">
-                                    <td className="px-6 py-4">{book.bookName}</td>
-                                    <td className="px-6 py-4">{book.author}</td>
-                                    <td className="px-6 py-4">{book.count}</td>
-                                    <td className="px-6 py-4">{book.type}</td>
-                                    <td className="px-6 py-4">{book.sold}</td>
-                                    <td className="px-6 py-4">
-                                        <button className="text-blue-500 hover:underline mr-2"
-                                            onClick={() => openUpdateModal(book)}>Sửa</button>
-                                        <button className="text-red-500 hover:underline"
-                                            onClick={() => handleDelete(book._id)}>Xóa</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className='relative'>
+                        <div className='max-h-[540px] overflow-y-auto'>
+                            <table className="min-w-full text-sm text-center text-gray-700">
+                                <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0">
+                                    <tr>
+                                        <th className="px-6 py-3">Title</th>
+                                        <th className="px-6 py-3">Tác giả</th>
+                                        <th className="px-6 py-3">Số lượng</th>
+                                        <th className="px-6 py-3">Loại</th>
+                                        <th className="px-6 py-3">Đã bán</th>
+                                        <th className="px-6 py-3">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {books.map((book, index) => (
+                                        <tr key={index} className="border-b hover:bg-gray-50 hover:cursor-pointer">
+                                            <td className="px-6 py-4">{book.bookName}</td>
+                                            <td className="px-6 py-4">{book.author}</td>
+                                            <td className="px-6 py-4">{book.count}</td>
+                                            <td className="px-6 py-4">{book.type}</td>
+                                            <td className="px-6 py-4">{book.sold}</td>
+                                            <td className="px-6 py-4">
+                                                <button className="text-blue-500 hover:underline mr-2"
+                                                    onClick={() => openUpdateModal(book)}>Sửa</button>
+                                                <button className="text-red-500 hover:underline"
+                                                    onClick={() => handleDelete(book._id)}>Xóa</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 )}
             </div>
 

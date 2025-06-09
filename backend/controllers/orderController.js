@@ -116,3 +116,29 @@ exports.getOrderDetailByUser = async (req, res) => {
   }
 };
 
+// PUT /api/orders/:id/status
+exports.updateOrderStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ message: 'Không tìm thấy đơn hàng' });
+    }
+
+    // Không cho phép cập nhật nếu đã giao
+    if (order.status === 'Delivered') {
+      return res.status(400).json({ message: 'Đơn hàng đã được giao, không thể cập nhật trạng thái.' });
+    }
+
+    order.status = status;
+    const updatedOrder = await order.save();
+
+    res.status(200).json(updatedOrder);
+  } catch (error) {
+    console.error('Lỗi khi cập nhật trạng thái:', error);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+};
+
