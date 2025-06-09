@@ -4,7 +4,13 @@ const { Review } = require('../models/Review');
 // [POST] /api/books
 exports.createBook = async (req, res) => {
     try {
-        const book = new Book(req.body);
+        const imgPath = req.file ? `static/uploads/${req.file.filename}` : null;
+
+        const book = new Book({
+            ...req.body,
+            img: imgPath
+        });
+
         await book.save();
         res.status(201).json(book);
     } catch (err) {

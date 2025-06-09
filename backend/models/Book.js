@@ -3,6 +3,7 @@ const { reviewSchema } = require('./Review'); // ✅ destructure đúng schema
 
 const bookSchema = new mongoose.Schema({
   bookName: { type: String, required: true, trim: true },
+  img: { type: String, required: false },
   price: { type: String, required: true, trim: true },
   supplier: { type: String, required: true, trim: true },
   publisher: { type: String, required: true, trim: true },
