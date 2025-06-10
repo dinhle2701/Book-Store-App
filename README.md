@@ -1,7 +1,7 @@
 <h1 align="center">📸 Book Store App</h1>
 
 <p align="center">
- Create simple online photo collages with support for downloading, customizable orientation (vertical/horizontal), borders, and background color.
+ An E-Commerce Website (book store) with full function from frontend to backend & deployment
 </p>
 
 ---
@@ -9,11 +9,21 @@
 
 ## 📦 **Features**
 
-- Upload and arrange images horizontally or vertically
-- Choose background color and border thickness
-- Preview the collage before downloading
-- Download the final image to your device
-- User-friendly interface
+- Login & Regis User
+- Auto create Admin account (admin@gmail.com - Admin@123)
+- Admin:
+  - Get all book information
+  - Create/Update/Delete a book
+  - Get all user information
+  - Get all orders information
+  - Update book status
+- User:
+  - Login & register account
+  - Get all book information
+  - Get user detail information
+  - Add book into cart
+  - Checkout books from cart to create new order
+  - Find & filter book (price, type)
 
 ---
 
@@ -37,8 +47,8 @@
 ### 📥 **Clone project**
 
 ```bash
-git clone https://github.com/your-username/online-photo-collage.git
-cd online-photo-collage
+git clone https://github.com/dinhle2701/Book-Store-App.git
+cd book-store-app
 ```
 
 ## 🛠️ **Project Using Guide**
