@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+    container_name: bookstore-api
+    ports:
+      - "5555:5555"
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_URL=mongodb://bookstore-mongo:27017/bookstore
+      - PORT=5555
+      - NODE_ENV=development
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: bookstore-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
