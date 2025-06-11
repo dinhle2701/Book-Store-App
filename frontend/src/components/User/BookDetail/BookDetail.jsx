@@ -5,11 +5,13 @@ import { useGetBookById, useAddReview } from '../../../query/book';
 import { useUser } from '../../../context/UserContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../../context/ToastContext';
+import { useCart } from '../../../context/CartContext';
 import API_PATHS from '../../../constant/apiPath'
 
 const BookDetail = () => {
     const { id } = useParams();
     const { user } = useUser(); // từ UserProvider
+    const { addToCart } = useCart();
     const userId = user ? user.iss : null;
     const queryClient = useQueryClient();
 
@@ -97,9 +99,17 @@ const BookDetail = () => {
                     <p className="text-gray-700 text-base mb-2">📦 <strong>Số lượng còn lại:</strong> {book.count}</p>
                     <p className="text-yellow-600 font-bold text-2xl mb-6">{book.price?.toLocaleString()} VNĐ</p>
 
-                    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                        🛒 Thêm vào giỏ hàng
+                    <button
+                        className={`px-6 py-2 rounded-lg transition text-white ${book.count === 0
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-blue-600 hover:bg-blue-700'
+                            }`}
+                        onClick={() => book.count > 0 && addToCart(book)}
+                        disabled={book.count === 0}
+                    >
+                        {book.count === 0 ? '🚫 Hết hàng' : '🛒 Thêm vào giỏ hàng'}
                     </button>
+
                 </div>
             </div>
 

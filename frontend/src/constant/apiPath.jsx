@@ -1,10 +1,12 @@
+const BASE_URL = "http://localhost:5555"
+
 const API_PATHS = {
-    book: "http://localhost:5555/api",
-    auth: "http://localhost:5555/api",
-    cart: "http://localhost:5555/api",
-    stat: "http://localhost:5555/api",
-    order: "http://localhost:5555/api",
-    img: "http://localhost:5555"
+    book: `${BASE_URL}/api`,
+    auth: `${BASE_URL}/api`,
+    cart: `${BASE_URL}/api`,
+    stat: `${BASE_URL}/api`,
+    order: `${BASE_URL}/api`,
+    img: BASE_URL
 };
 
 export default API_PATHS;

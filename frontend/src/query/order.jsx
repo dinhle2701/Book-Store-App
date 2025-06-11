@@ -33,6 +33,7 @@ export const useGetOrderDetailByUser = (orderId, email) => {
                     'X-User-Email': email
                 }
             });
+            console.log("res", res)
             return res.data;
         },
         enabled: !!orderId && !!email // Chỉ fetch nếu có orderId và email

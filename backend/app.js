@@ -10,9 +10,9 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: 'https://book-store-app-mauve.vercel.app',  // Chỉ cho phép frontend của bạn trên Vercel này
+    origin: ['https://book-store-app-mauve.vercel.app', 'http://localhost:3000'],  // Chỉ cho phép frontend của bạn trên Vercel này
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-user-email']
 }));
 app.use(express.json());
 

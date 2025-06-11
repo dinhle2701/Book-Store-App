@@ -58,7 +58,7 @@ const Checkout = () => {
                 clearCart?.(); // ✅ reset giỏ hàng nếu bạn có hàm này
             },
             onError: (error) => {
-                alert('Đã xảy ra lỗi khi đặt hàng.');
+                alert('Số lượng bạn đặt vượt quá số lượng kho');
                 console.log(error)
                 console.log(orderData)
             },

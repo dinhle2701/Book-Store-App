@@ -11,8 +11,25 @@ exports.createOrder = async (req, res) => {
       return res.status(400).json({ message: 'Thiếu thông tin đặt hàng' });
     }
 
+    // 1. Kiểm tra tồn kho trước khi tạo order
+    for (const item of cartItems) {
+      const book = await Book.findById(item._id);
+
+      if (!book) {
+        return res.status(404).json({ message: `Không tìm thấy sách với ID: ${item._id}` });
+      }
+
+      if (book.count < item.quantity) {
+        return res.status(400).json({
+          message: `Sách "${book.bookName}" chỉ còn lại ${book.count} cuốn`,
+        });
+      }
+    }
+
+    // 2. Tính tổng tiền
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+    // 3. Tạo và lưu đơn hàng
     const newOrder = new Order({
       name,
       email,
@@ -25,22 +42,11 @@ exports.createOrder = async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
-    // 🔁 Cập nhật sách: giảm count, tăng sold
+    // 4. Cập nhật tồn kho
     for (const item of cartItems) {
-      const book = await Book.findById(item._id); // item._id là id của book
-
-      if (!book) continue;
-
-      // Nếu số lượng mua vượt quá số lượng còn lại
-      if (book.count < item.quantity) {
-        return res.status(400).json({
-          message: `Sách "${book.bookName}" chỉ còn lại ${book.count} cuốn`,
-        });
-      }
-
+      const book = await Book.findById(item._id);
       book.count -= item.quantity;
       book.sold += item.quantity;
-
       await book.save();
     }
 
@@ -48,11 +54,13 @@ exports.createOrder = async (req, res) => {
       message: 'Đặt hàng thành công',
       order: savedOrder,
     });
+
   } catch (error) {
-    console.error('Lỗi khi đặt hàng:', error);
+    console.error('Lỗi khi đặt hàng: ', error);
     res.status(500).json({ message: 'Lỗi server khi tạo đơn hàng' });
   }
 };
+
 
 
 // [GET] /api/orders - Lấy toàn bộ đơn hàng (admin)

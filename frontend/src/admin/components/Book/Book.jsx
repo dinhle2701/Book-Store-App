@@ -54,17 +54,13 @@ const Book = () => {
                     <button
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg mb-4"
                         onClick={() => setShowModal(true)}
-                    >
-                        ➕ New Book
-                    </button>
+                    >+</button>
                 </div>
 
                 {isLoading ? (
                     <p className="text-center text-gray-500">Đang tải danh sách sách...</p>
                 ) : isError ? (
                     <p className="text-center text-red-500">Lỗi: {error.message}</p>
-                ) : books.length === 0 ? (
-                    <p className="text-center text-gray-500">Không có sách nào.</p>
                 ) : (
                     <div className='relative'>
                         <div className='max-h-[540px] overflow-y-auto'>
@@ -80,26 +76,35 @@ const Book = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {books.map((book, index) => (
-                                        <tr key={index} className="border-b hover:bg-gray-50 hover:cursor-pointer">
-                                            <td className="px-6 py-4">{book.bookName}</td>
-                                            <td className="px-6 py-4">{book.author}</td>
-                                            <td className="px-6 py-4">{book.count}</td>
-                                            <td className="px-6 py-4">{book.type}</td>
-                                            <td className="px-6 py-4">{book.sold}</td>
-                                            <td className="px-6 py-4">
-                                                <button className="text-blue-500 hover:underline mr-2"
-                                                    onClick={() => openUpdateModal(book)}>Sửa</button>
-                                                <button className="text-red-500 hover:underline"
-                                                    onClick={() => handleDelete(book._id)}>Xóa</button>
+                                    {books.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" className="py-4 text-gray-500">
+                                                Không có sách nào.
                                             </td>
                                         </tr>
-                                    ))}
+                                    ) : (
+                                        books.map((book, index) => (
+                                            <tr key={index} className="border-b hover:bg-gray-50 hover:cursor-pointer">
+                                                <td className="px-6 py-4">{book.bookName}</td>
+                                                <td className="px-6 py-4">{book.author}</td>
+                                                <td className="px-6 py-4">{book.count}</td>
+                                                <td className="px-6 py-4">{book.type}</td>
+                                                <td className="px-6 py-4">{book.sold}</td>
+                                                <td className="px-6 py-4">
+                                                    <button className="text-blue-500 hover:underline mr-2"
+                                                        onClick={() => openUpdateModal(book)}>Sửa</button>
+                                                    <button className="text-red-500 hover:underline"
+                                                        onClick={() => handleDelete(book._id)}>Xóa</button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 )}
+
             </div>
 
             {/* Modal hiển thị khi showModal = true */}

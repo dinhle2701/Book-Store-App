@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const initAdminAccount = require('./utils/initAdmin'); // đường dẫn chính xác
 
 const PORT = process.env.PORT || 5555;
-const MONGO_URI = process.env.MONGO_URL;
+const MONGO_URI = "mongodb://localhost:27017/bookstore";
 
 
 mongoose.connect(MONGO_URI, {
@@ -14,7 +14,6 @@ mongoose.connect(MONGO_URI, {
     console.log('MongoDB connected');
 
     await initAdminAccount();
-
 
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
