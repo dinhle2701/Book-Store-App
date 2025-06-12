@@ -48,21 +48,5 @@ export default function AppRouter() {
                 <Route path='/admin/orders' element={<Order />} />
             </Route>
         </Routes>
-        // <Routes>
-        //     <Route path="/" element={<Home />} />
-        //     {/* <Route path="/book/:id" element={<BookDetail />} />
-        //     <Route path="/cart" element={<Cart />} /> */}
-        //     <Route path="/login" element={<Login />} />
-        //     <Route path="/register" element={<Register />} />
-
-        //     {/* Admin protected routes */}
-        //     {/* <Route element={<ProtectedRoute adminOnly={true} />}>
-        //         <Route path="/admin" element={<AdminDashboard />} />
-        //         <Route path="/admin/add" element={<AddBook />} />
-        //         <Route path="/admin/edit/:id" element={<EditBook />} />
-        //     </Route> */}
-
-        //     <Route path="*" element={<NotFound />} />
-        // </Routes>
     );
 }

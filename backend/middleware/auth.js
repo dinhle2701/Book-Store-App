@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.role === 'admin') next();
+    if (req.user.role.toLowerCase() === 'Admin') next();
     else res.status(403).json({ message: 'Admin access only' });
   });
 };
