@@ -1,10 +1,12 @@
+require('dotenv').config();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 // Đăng ký
 exports.register = async (req, res) => {
+    console.log("📥 Đã gọi vào route REGISTER"); // Thêm dòng này để kiểm tra
+
     try {
         const { username, email, password, role } = req.body;
 
@@ -22,14 +24,19 @@ exports.register = async (req, res) => {
         });
 
         await newUser.save();
+        console.log("✅ Đăng ký thành công");
         res.status(201).json({ message: 'Register successful' });
     } catch (error) {
-        res.status(500).json({ message: 'Register failed', error: error.message });
+        console.error("❌ Lỗi đăng ký:", error.message);
+        console.log("Lỗi đăng ký")
+        res.status(500).json({ message: 'Register failed!!!', error: error.message });
     }
 };
 
+
 // Đăng nhập
 exports.login = async (req, res) => {
+    console.log('🔑 Login API hit'); 
     try {
         const { email, password } = req.body;
 
@@ -41,6 +48,8 @@ exports.login = async (req, res) => {
         if (!isMatch)
             return res.status(401).json({ message: 'Invalid password' });
 
+        
+        console.log('JWT_SECRET:', process.env.JWT_SECRET);
         const token = jwt.sign(
             { id: user._id, role: user.role, iss: user.username, email: user.email },
             process.env.JWT_SECRET,
@@ -57,6 +66,7 @@ exports.login = async (req, res) => {
             }
         });
     } catch (error) {
+        console.log('JWT_SECRET:', process.env.JWT_SECRET);
         res.status(500).json({ message: 'Login failed', error: error.message });
     }
 };
