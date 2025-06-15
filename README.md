@@ -106,18 +106,22 @@ Online-Photo-Collage-Tool
 ### **2. Run Project**
 Open Terminal and following:
 ## Frontend:
-Link: https://book-store-app-mauve.vercel.app/
-
+Link: 
+  - `Production`: https://book-store-app-mauve.vercel.app/
+  - `Development`: http://localhost:3000
 ---
 ## Backend:
 Open Terminal, Docker and following:
     - Into root folder (Book-Store-App) open cmd and type this:
 
 ```
-    Type this into Terminal:
+    Type this into Terminal (1):
     cd backend -> docker-compose up --build -> Enter
+
+    or you haven't Docker, type this:
+    cd backend -> npm i -> npm start
 ```
 Link: http://127.0.0.1:5555
-- getStat:   http://127.0.0.1:5555/api/stat/
-- getAllBook:  http://127.0.0.1:5555/api/book
-- getAllOrder:   http://127.0.0.1:5555/api/orders
+- `getStat`:   http://127.0.0.1:5555/api/stat/
+- `getAllBook`:  http://127.0.0.1:5555/api/book
+- `getAllOrder`:   http://127.0.0.1:5555/api/orders
