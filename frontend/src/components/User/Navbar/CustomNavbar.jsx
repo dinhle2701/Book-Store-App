@@ -110,19 +110,19 @@ const CustomNavbar = () => {
                       onClick={handleInformation}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                     >
-                      Thông tin cá nhân
+                      Information
                     </button>
                     <button
                       onClick={handleOrder}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                     >
-                      Đơn hàng
+                      Orders
                     </button>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     >
-                      Đăng xuất
+                      Logout
                     </button>
                   </div>
                 )}

@@ -13,6 +13,7 @@ const Checkout = () => {
     const [phone, setPhone] = useState('');
 
     const { mutate: createOrder, isLoading } = useCreateOrder(); // ✅ React Query Mutation
+    const fallbackImage = 'https://cdn2.iconfinder.com/data/icons/packing/80/shipping-34-512.png';
 
     const handleCheckout = (e) => {
         e.preventDefault();
@@ -80,11 +81,11 @@ const Checkout = () => {
             <div className="max-w-7xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
                 {/* LEFT: Thông tin thanh toán */}
                 <div className="bg-white shadow-md rounded p-8">
-                    <h2 className="text-2xl font-bold mb-6">Thông tin cá nhân</h2>
+                    <h2 className="text-2xl font-bold mb-6">Personal Information</h2>
 
                     <form onSubmit={handleCheckout} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Họ và tên</label>
+                            <label className="block text-sm font-medium text-gray-700">Full name</label>
                             <input
                                 type="text"
                                 value={user?.iss || ''}
@@ -104,7 +105,7 @@ const Checkout = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Số điện thoại</label>
+                            <label className="block text-sm font-medium text-gray-700">Phone number</label>
                             <input
                                 type="number"
                                 value={phone}
@@ -114,7 +115,7 @@ const Checkout = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Địa chỉ</label>
+                            <label className="block text-sm font-medium text-gray-700">Address</label>
                             <textarea
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
@@ -129,26 +130,39 @@ const Checkout = () => {
                             disabled={isLoading}
                             className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition disabled:opacity-50"
                         >
-                            {isLoading ? 'Đang xử lý...' : 'Xác nhận đặt hàng'}
+                            {isLoading ? 'Đang xử lý...' : 'Checkout'}
                         </button>
                     </form>
                 </div>
 
                 {/* RIGHT: Thông tin sản phẩm trong giỏ */}
                 <div className="bg-white shadow-md rounded p-8">
-                    <h2 className="text-2xl font-semibold mb-4">Sản phẩm trong giỏ</h2>
+                    <h2 className="text-2xl font-semibold mb-4">Product in cart</h2>
                     {cartItems.length === 0 ? (
-                        <p>Không có sản phẩm trong giỏ hàng.</p>
+                        <p>Cart is empty</p>
                     ) : (
                         <ul className="divide-y divide-gray-200 space-y-4">
                             {cartItems.map((item) => (
                                 <li key={item.id} className="flex justify-between align-middle items-center py-2">
                                     <img
-                                        src={item.img ? `${API_PATHS.img}/${item.img}` : 'https://via.placeholder.com/200x280'}
+                                        src={item.img ? `${API_PATHS.img}/${item.img}` : 'https://cdn2.iconfinder.com/data/icons/packing/80/shipping-34-512.png'}
                                         alt={item.bookName}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = fallbackImage;
+                                        }}
                                         width={'40px'} height={'40px'}
                                         className="object-cover text-center"
                                     />
+                                    {/* <img
+                                            src={`${API_PATHS.img}/${book.img}`}
+                                            alt={book.bookName}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = fallbackImage;
+                                            }}
+                                            className="rounded-lg w-full h-64 object-cover mb-4 hover:cursor-pointer"
+                                        /> */}
                                     <div className="w-80">
                                         <p className="font-medium text-sm truncate">{item.bookName}</p>
                                         <p className="text-sm text-gray-600">
@@ -164,7 +178,7 @@ const Checkout = () => {
                     )}
                     <hr className="my-4" />
                     <div className="text-lg font-bold text-right">
-                        Tổng tiền: {total.toLocaleString()} VND
+                        Total: {total.toLocaleString()} VND
                     </div>
                 </div>
             </div>

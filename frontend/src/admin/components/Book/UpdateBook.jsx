@@ -35,11 +35,11 @@ const UpdateBookModal = ({ isOpen, onClose, book }) => {
             { id: book._id, updatedBook: formData },  // chú ý đổi `data` thành `updatedBook`
             {
                 onSuccess: () => {
-                    alert("Cập nhật sách thành công!");
+                    alert("Update successfully!");
                     onClose();
                 },
                 onError: (err) => {
-                    alert("Lỗi khi cập nhật sách: " + err.message);
+                    alert("Failed to update: " + err.message);
                 },
             }
         );
@@ -57,17 +57,17 @@ const UpdateBookModal = ({ isOpen, onClose, book }) => {
                 >
                     &times;
                 </button>
-                <h2 className="text-2xl font-bold mb-4 text-center">Chỉnh sửa sách</h2>
+                <h2 className="text-2xl font-bold mb-4 text-center">Update book</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <Input label="Tên sách" name="bookName" value={formData.bookName} onChange={handleChange} />
-                    <Input label="Tác giả" name="author" value={formData.author} onChange={handleChange} />
-                    <Input label="Nhà xuất bản" name="publisher" value={formData.publisher} onChange={handleChange} />
-                    <Input label="Nhà cung cấp" name="supplier" value={formData.supplier} onChange={handleChange} />
-                    <Input label="Số lượng" name="count" type="number" value={formData.count} onChange={handleChange} />
-                    <Input label="Giá" name="price" type="number" value={formData.price} onChange={handleChange} />
+                    <Input label="Book name" name="bookName" value={formData.bookName} onChange={handleChange} />
+                    <Input label="Author" name="author" value={formData.author} onChange={handleChange} />
+                    <Input label="Publisher" name="publisher" value={formData.publisher} onChange={handleChange} />
+                    <Input label="Provider" name="supplier" value={formData.supplier} onChange={handleChange} />
+                    <Input label="Quantity" name="count" type="number" value={formData.count} onChange={handleChange} />
+                    <Input label="Price" name="price" type="number" value={formData.price} onChange={handleChange} />
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Loại bìa</label>
+                        <label className="block text-sm font-medium text-gray-700">Book types</label>
                         <select
                             name="type"
                             value={formData.type}
@@ -84,7 +84,7 @@ const UpdateBookModal = ({ isOpen, onClose, book }) => {
                         disabled={updateBook.isLoading}
                         className="w-full bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600 transition"
                     >
-                        {updateBook.isLoading ? "Đang cập nhật..." : "Cập nhật sách"}
+                        {updateBook.isLoading ? "Updating..." : "Update"}
                     </button>
                 </form>
             </div>

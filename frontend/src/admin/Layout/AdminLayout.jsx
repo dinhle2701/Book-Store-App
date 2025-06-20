@@ -4,7 +4,7 @@ import Content from '../components/Content/Content';
 
 const AdminLayout = () => {
     return (
-        <div className="adminLayout flex">
+        <div className="adminLayout flex relative">
             {/* Sidebar sẽ có width cố định, hoặc ẩn tùy theo thiết bị */}
             <Sidebar />
 

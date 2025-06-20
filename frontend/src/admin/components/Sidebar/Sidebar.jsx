@@ -17,7 +17,7 @@ const Sidebar = () => {
     };
 
     return (
-        <>
+        <div className='h-svh sticky top-0'>
             {/* Toggle button for mobile */}
             <div className="md:hidden fixed top-4 left-4 z-50">
                 <button
@@ -83,7 +83,7 @@ const Sidebar = () => {
                     onClick={() => setIsOpen(false)}
                 />
             )}
-        </>
+        </div>
     );
 };
 
