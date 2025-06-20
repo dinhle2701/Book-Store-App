@@ -68,11 +68,11 @@ const Book = () => {
                                 <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0">
                                     <tr>
                                         <th className="px-6 py-3">Title</th>
-                                        <th className="px-6 py-3">Tác giả</th>
-                                        <th className="px-6 py-3">Số lượng</th>
-                                        <th className="px-6 py-3">Loại</th>
-                                        <th className="px-6 py-3">Đã bán</th>
-                                        <th className="px-6 py-3">Hành động</th>
+                                        <th className="px-6 py-3">Author</th>
+                                        <th className="px-6 py-3">Quantity</th>
+                                        <th className="px-6 py-3">Categories</th>
+                                        <th className="px-6 py-3">Sold</th>
+                                        <th className="px-6 py-3">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,9 +92,9 @@ const Book = () => {
                                                 <td className="px-6 py-4">{book.sold}</td>
                                                 <td className="px-6 py-4">
                                                     <button className="text-blue-500 hover:underline mr-2"
-                                                        onClick={() => openUpdateModal(book)}>Sửa</button>
+                                                        onClick={() => openUpdateModal(book)}>Update</button>
                                                     <button className="text-red-500 hover:underline"
-                                                        onClick={() => handleDelete(book._id)}>Xóa</button>
+                                                        onClick={() => handleDelete(book._id)}>Delete</button>
                                                 </td>
                                             </tr>
                                         ))

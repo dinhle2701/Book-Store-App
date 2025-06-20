@@ -161,12 +161,12 @@ const Register = () => {
             <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
                 <ToastContainer />
                 <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
-                    <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Đăng ký</h2>
+                    <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Register</h2>
                     <form onSubmit={handleSignup} className="space-y-4">
 
                         {/* Username */}
                         <div>
-                            <label className="block font-medium mb-1">Tên người dùng</label>
+                            <label className="block font-medium mb-1">Username</label>
                             <input
                                 type="text"
                                 name="username"
@@ -194,7 +194,7 @@ const Register = () => {
 
                         {/* Password */}
                         <div>
-                            <label className="block font-medium mb-1">Mật khẩu</label>
+                            <label className="block font-medium mb-1">Password</label>
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
@@ -223,13 +223,13 @@ const Register = () => {
                                 className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
                                 disabled={registerMutation.isLoading}
                             >
-                                {registerMutation.isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
+                                {registerMutation.isLoading ? 'Registering...' : 'Register'}
                             </button>
                         </div>
 
                         <p className="text-center mt-3 text-sm text-gray-700">
-                            Đã có tài khoản?
-                            <Link to="/login" className="text-green-600 hover:underline ml-1">Đăng nhập</Link>
+                            Have an account?
+                            <Link to="/login" className="text-green-600 hover:underline ml-1">Login</Link>
                         </p>
                     </form>
                 </div>

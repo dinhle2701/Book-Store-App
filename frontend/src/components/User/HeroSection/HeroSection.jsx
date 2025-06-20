@@ -11,19 +11,19 @@ const HeroSection = () => {
                 {/* Text Side */}
                 <div className='text-start'>
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-                        Nhận sách mới của bạn<br />với <span className="text-green-700">giá tốt nhất</span>
+                        Get your new books<br />at the <span className="text-green-700">best price</span>
                     </h1>
                     <p className="text-gray-600 mb-6 text-base md:text-lg">
-                        Bạn có thể tìm bất cứ loại sách nào với giá tốt nhất. Tham gia với chúng tôi với đề xuất đặc biệt
-                        {/* You can find any kind of books with the best price. Join us, for a special offer. */}
+                        You can find any kind of books at the best price. Join us for a special offer.
                     </p>
                     <button
                         onClick={() => navigate('/books')}
                         className="bg-green-700 text-white px-6 py-2 rounded-md text-sm hover:bg-green-800 transition"
                     >
-                        Khám phá ngay
+                        Explore Now
                     </button>
                 </div>
+
 
                 {/* Image Side */}
                 <div className="flex justify-center md:justify-end">

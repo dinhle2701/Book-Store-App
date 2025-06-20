@@ -21,6 +21,10 @@ const Checkout = () => {
             alert('Vui lòng nhập địa chỉ giao hàng.');
             return;
         }
+        if (address.length > 256) {
+            alert('Địa chỉ giao hàng không được vượt quá 300 ký tự.');
+            return;
+        }
 
         if (cartItems.length === 0) {
             alert('Giỏ hàng của bạn đang trống.');

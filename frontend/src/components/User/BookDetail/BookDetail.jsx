@@ -21,6 +21,15 @@ const BookDetail = () => {
 
     const { showToast } = useToast();
 
+    const fallbackImage = 'https://cdn2.iconfinder.com/data/icons/packing/80/shipping-34-512.png';
+    const maxCommentLength = 150;
+    const [expandedComments, setExpandedComments] = useState({});
+    const toggleExpand = (id) => {
+        setExpandedComments((prev) => ({
+            ...prev,
+            [id]: !prev[id],
+        }));
+    };
 
     // Lấy reviews từ book, nếu chưa có thì mặc định mảng rỗng
     const reviews = book?.reviews || [];
@@ -86,8 +95,12 @@ const BookDetail = () => {
 
             <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-2xl overflow-hidden text-start">
                 <img
-                    src={book.img ? `${API_PATHS.img}/${book.img}` : `http://localhost:5555/${book.image}`}
+                    src={book.img ? `${API_PATHS.img}/${book.img}` : `https://cdn2.iconfinder.com/data/icons/packing/80/shipping-34-512.png`}
                     alt={book.bookName}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = fallbackImage;
+                    }}
                     className="w-full md:w-1/3 object-cover text-center p-6"
                 />
                 <div className="p-6 flex-1">
@@ -101,8 +114,8 @@ const BookDetail = () => {
 
                     <button
                         className={`px-6 py-2 rounded-lg transition text-white ${book.count === 0
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700'
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 hover:bg-blue-700'
                             }`}
                         onClick={() => book.count > 0 && addToCart(book)}
                         disabled={book.count === 0}
@@ -136,7 +149,7 @@ const BookDetail = () => {
                                         {review.username && ` | Người dùng: ${review.username}`}
                                     </p>
                                 </div>
-                                <p className="text-sm text-gray-700 text-start">{review.comment}</p>
+                                <p className="text-sm text-gray-700 text-start whitespace-pre-line break-words">{review.comment}</p>
                             </div>
                         ))}
                     </div>
@@ -169,13 +182,25 @@ const BookDetail = () => {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Nhận xét:</label>
-                            <textarea
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                rows={3}
-                                placeholder="Nhập nhận xét của bạn..."
-                                className="w-full mt-1 px-4 py-2 border rounded"
-                            />
+                            <div className="relative">
+                                <textarea
+                                    value={comment}
+                                    onChange={(e) => {
+                                        const input = e.target.value;
+                                        // Chỉ cho phép chữ cái, số, dấu cách, dấu chấm câu đơn giản
+                                        const filtered = input.replace(/[^a-zA-ZÀ-ỹ0-9 .,!?'"()\n\r-]/g, '');
+                                        setComment(filtered);
+                                    }}
+                                    rows={3}
+                                    maxLength={150}
+                                    placeholder="Nhập nhận xét của bạn..."
+                                    className="w-full mt-1 px-4 py-2 border rounded"
+                                />
+
+                                <span className="absolute bottom-2 right-4 text-xs text-gray-500">
+                                    {comment.length}/{maxCommentLength}
+                                </span>
+                            </div>
                         </div>
 
                         <button

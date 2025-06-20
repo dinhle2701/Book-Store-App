@@ -16,7 +16,7 @@ const Order = () => {
 
 
   if (isLoading) {
-    return <p className="text-center mt-8">Đang tải dữ liệu...</p>;
+    return <p className="text-center mt-8">Loading data...</p>;
   }
 
   return (
@@ -73,7 +73,7 @@ const Order = () => {
           </table>
 
           {orders.length === 0 && (
-            <p className="text-gray-500 mt-4">Không có đơn hàng nào.</p>
+            <p className="text-gray-500 mt-4">No orders available</p>
           )}
         </div>
       </div>

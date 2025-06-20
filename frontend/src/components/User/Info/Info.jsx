@@ -6,7 +6,7 @@ const Info = () => {
     const { user } = useUser();
 
     if (!user) {
-        return <p className="text-center mt-6">Đang tải thông tin người dùng...</p>;
+        return <p className="text-center mt-6">Loading information...</p>;
     }
 
     const handleFileChange = (event) => {
@@ -22,7 +22,7 @@ const Info = () => {
             </div>
             <div className="mt-6 max-w-5xl mx-auto px-4">
 
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">THÔNG TIN CÁ NHÂN</h2>
+                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">PERSONAL INFORMATION</h2>
 
                 <div className="flex flex-col md:flex-row items-center md:items-start bg-white shadow-md rounded-lg p-6 gap-6">
 
@@ -45,16 +45,16 @@ const Info = () => {
                     {/* Info Table */}
                     <div className="flex-1">
                         <h3 className="text-xl font-semibold text-gray-600 mb-4 text-center md:text-left">
-                            {user.iss || 'Không rõ'}
+                            {user.iss || 'Unknown'}
                         </h3>
                         <div className="text-sm text-gray-700">
                             <div className="flex mb-2">
                                 <span className="font-semibold w-24">Email:</span>
-                                <span>{user.email || 'Không rõ'}</span>
+                                <span>{user.email || 'Unknown'}</span>
                             </div>
                             <div className="flex mb-2">
-                                <span className="font-semibold w-24">Vai trò:</span>
-                                <span>{user.role || 'Không rõ'}</span>
+                                <span className="font-semibold w-24">Role:</span>
+                                <span>{user.role || 'Unknown'}</span>
                             </div>
                         </div>
                     </div>

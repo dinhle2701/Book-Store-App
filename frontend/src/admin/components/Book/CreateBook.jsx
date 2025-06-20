@@ -16,6 +16,59 @@ const CreateBookModal = ({ isOpen, onClose }) => {
         image: null,
     });
 
+    const validateForm = () => {
+        const textFields = ['bookName', 'author', 'supplier'];
+        const regex = /^[a-zA-Z0-9\s]+$/;
+
+        for (let field of textFields) {
+            const value = formData[field];
+            if (!regex.test(value)) {
+                showToast(`❌ ${field} must not contain special characters`, 'error');
+                return false;
+            }
+            if (value.length > 256) {
+                showToast(`❌ ${field} must not exceed 256 characters`, 'error');
+                return false;
+            }
+            if (!regex.test(formData[field])) {
+                showToast(`❌ ${field} must not contain special characters`, 'error');
+                return false;
+            }
+        }
+
+        if (Number(formData.price) <= 0) {
+            showToast("❌ Price must be greater than 0", 'error');
+            return false;
+        }
+
+        if (Number(formData.count) <= 0) {
+            showToast("❌ Quantity must be greater than 0", 'error');
+            return false;
+        }
+
+        // Validate image file type
+        const image = formData.image;
+        if (!image) {
+            showToast("❌ Please upload an image", 'error');
+            return false;
+        }
+
+        const validImageTypes = ['image/jpeg', 'image/png'];
+        if (!validImageTypes.includes(image.type)) {
+            showToast("❌ Image must be a .jpg or .png file", 'error');
+            return false;
+        }
+        const maxSizeInBytes = 6 * 1024 * 1024; // 6MB
+        if (image.size > maxSizeInBytes) {
+            showToast("❌ Image must be smaller than 6MB", 'error');
+            return false;
+        }
+
+        return true;
+    };
+
+
+
     const createBook = useCreateBook();
 
     const handleChange = (e) => {
@@ -29,7 +82,7 @@ const CreateBookModal = ({ isOpen, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        if (!validateForm()) return;
         const payload = new FormData();
         Object.entries(formData).forEach(([key, value]) => {
             payload.append(key, value);

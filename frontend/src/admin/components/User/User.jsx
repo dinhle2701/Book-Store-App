@@ -20,9 +20,9 @@ const User = () => {
             <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
               <tr>
                 <th className="px-6 py-3">STT</th>
-                <th className="px-6 py-3">Tên</th>
+                <th className="px-6 py-3">Name</th>
                 <th className="px-6 py-3">Email</th>
-                <th className="px-6 py-3">Vai trò</th>
+                <th className="px-6 py-3">Role</th>
               </tr>
             </thead>
             <tbody>

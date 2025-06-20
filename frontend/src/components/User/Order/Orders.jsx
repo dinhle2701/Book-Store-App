@@ -22,20 +22,20 @@ const Orders = () => {
         <Breadcrumbs />
       </div>
       <div className="order max-w-7xl mx-auto mb-12 items-center gap-8">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">ĐƠN HÀNG</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">MY ORDERS</h2>
         <div className="bg-white shadow-md rounded-lg p-6 overflow-x-auto">
           {orders.length === 0 ? (
-            <p className="text-gray-500 mt-4">Không có đơn hàng nào.</p>
+            <p className="text-gray-500 mt-4">No orders found</p>
           ) : (
             <table className="min-w-full table-auto text-sm text-center text-gray-700">
               <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
                 <tr>
                   <th className="px-6 py-3">STT</th>
                   <th className="px-6 py-3">Email</th>
-                  <th className="px-6 py-3">Địa chỉ</th>
-                  <th className="px-6 py-3">Số điện thoại</th>
-                  <th className="px-6 py-3">Trạng thái</th>
-                  <th className="px-6 py-3">Tổng cộng</th>
+                  <th className="px-6 py-3">Address</th>
+                  <th className="px-6 py-3">Phone number</th>
+                  <th className="px-6 py-3">Status</th>
+                  <th className="px-6 py-3">Total</th>
                 </tr>
               </thead>
               <tbody>

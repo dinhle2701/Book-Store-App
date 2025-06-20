@@ -5,7 +5,7 @@ import Breadcrumbs from '../../Custom/BreadCrums';
 import { useCart } from '../../../context/CartContext';
 import CustomClick from '../../Custom/CustomClick';
 import API_PATHS from '../../../constant/apiPath';
-
+import { useToast } from '../../../context/ToastContext';
 const BookList = () => {
     const { data: books = [], isLoading, isError, error } = useGetBooks();
     const navigate = useNavigate();
@@ -17,6 +17,8 @@ const BookList = () => {
 
     // Lấy danh sách loại sách duy nhất
     const uniqueTypes = [...new Set(books.map(book => book.type).filter(Boolean))];
+    const fallbackImage = 'https://cdn2.iconfinder.com/data/icons/packing/80/shipping-34-512.png';
+    const { showToast } = useToast();
 
     // Áp dụng tìm kiếm, lọc, sắp xếp
     const filteredBooks = books
@@ -40,52 +42,53 @@ const BookList = () => {
             </div>
 
             <div className="px-6 py-10 max-w-screen-xl mx-auto">
-                <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">📚 Danh Sách Sách</h1>
+                <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">📚 Book List</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Sidebar Bộ lọc */}
                     <div className="bg-white shadow rounded-xl p-4 h-fit">
-                        <h2 className="text-xl font-semibold mb-4">🔍 Tìm kiếm & Bộ lọc</h2>
+                        <h2 className="text-xl font-semibold mb-4">🔍 Search & Filter</h2>
 
-                        {/* Tìm kiếm */}
+                        {/* Search */}
                         <input
                             type="text"
-                            placeholder="🔎 Tên sách..."
+                            placeholder="🔎 Book name..."
                             className="w-full p-2 border rounded mb-4"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
 
-                        {/* Lọc theo loại sách */}
-                        <label className="block mb-2 font-medium">📚 Danh mục:</label>
+                        {/* Filter by category */}
+                        <label className="block mb-2 font-medium">📚 Category:</label>
                         <select
                             value={filterType}
                             onChange={(e) => setFilterType(e.target.value)}
                             className="w-full p-2 border rounded mb-4"
                         >
-                            <option value="">-- Tất cả loại --</option>
+                            <option value="">-- All categories --</option>
                             {uniqueTypes.map((type, index) => (
                                 <option key={index} value={type}>{type}</option>
                             ))}
                         </select>
 
-                        {/* Sắp xếp theo giá */}
-                        <label className="block mb-2 font-medium">💰 Sắp xếp theo giá:</label>
+                        {/* Sort by price */}
+                        <label className="block mb-2 font-medium">💰 Sort by price:</label>
                         <select
                             value={sortOrder}
                             onChange={(e) => setSortOrder(e.target.value)}
                             className="w-full p-2 border rounded"
                         >
-                            <option value="">-- Không sắp xếp --</option>
-                            <option value="asc">Giá tăng dần</option>
-                            <option value="desc">Giá giảm dần</option>
+                            <option value="">-- No sorting --</option>
+                            <option value="asc">Price: Low to High</option>
+                            <option value="desc">Price: High to Low</option>
                         </select>
                     </div>
+
 
                     {/* Grid sách */}
                     <div className="md:col-span-3">
                         {filteredBooks.length === 0 ? (
-                            <p className="text-center text-gray-500">Không có sách phù hợp.</p>
+                            <p className="text-center text-gray-500">No books available.</p>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {filteredBooks.map((book) => (
@@ -95,20 +98,30 @@ const BookList = () => {
                                     >
                                         <img
                                             onClick={() => navigate(`/books/${book._id}`)}
-                                            src={book.img ? `${API_PATHS.img}/${book.img}` : 'https://via.placeholder.com/200x280'}
+                                            src={`${API_PATHS.img}/${book.img}`}
                                             alt={book.bookName}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = fallbackImage;
+                                            }}
                                             className="rounded-lg w-full h-64 object-cover mb-4 hover:cursor-pointer"
                                         />
+
+
+
                                         <h2 className="text-lg font-bold text-gray-800 truncate">{book.bookName}</h2>
-                                        <p className="text-sm text-gray-600">📖 Tác giả: {book.author}</p>
-                                        <p className="text-sm text-gray-600">📦 Số lượng: {book.count}</p>
-                                        <p className="text-sm text-gray-600">📚 Loại: {book.type}</p>
+                                        <p className="text-sm text-gray-600 truncate">📖 Author: {book.author}</p>
+                                        <p className="text-sm text-gray-600 truncate">📦 Quantity: {book.count}</p>
+                                        <p className="text-sm text-gray-600 truncate">📚 Type: {book.type}</p>
                                         <p className="text-yellow-600 font-semibold text-lg mt-2">{book.price?.toLocaleString()} VNĐ</p>
                                         <CustomClick
-                                            onClick={() => addToCart(book)}
+                                            onClick={() => {
+                                                addToCart(book);
+                                                showToast(`🛒 Book added to cart!`, 'success');
+                                            }}
                                             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg"
                                         >
-                                            📘 Thêm vào giỏ
+                                            📘 Add to cart
                                         </CustomClick>
                                     </div>
                                 ))}
@@ -116,7 +129,7 @@ const BookList = () => {
                         )}
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 };
